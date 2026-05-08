@@ -62,3 +62,13 @@ CREATE OR REPLACE TABLE files (
     FOREIGN KEY (forum_id) REFERENCES forum(forum_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+
+CREATE TABLE preferiti (
+    preferito_id INT PRIMARY KEY AUTO_INCREMENT,
+    utente_id INT NOT NULL,
+    forum_id INT NOT NULL,
+    data_aggiunta TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (utente_id) REFERENCES utenti(utente_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (forum_id) REFERENCES forum(forum_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    UNIQUE (utente_id, forum_id)
+);
