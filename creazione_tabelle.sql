@@ -5,7 +5,7 @@ USE students_forum;
 
 # tabella scuole che rappresenta le scuole che possono registrarsi al sito, con i loro dati di contatto 
 # e una password per accedere al sito e gestire i propri post e commenti.
-CREATE TABLE scuole (
+CREATE OR REPLACE TABLE scuole (
     scuola_id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(255) NOT NULL,
     indirizzo VARCHAR(255) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE scuole (
 
 # tabella che rappresenta gli utenti
 # gli utenti sono diversi dalla scuola
-CREATE TABLE utenti (
+CREATE OR REPLACE TABLE utenti (
     utente_id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(100) NOT NULL UNIQUE,
     nome VARCHAR(100) NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE utenti (
     FOREIGN KEY (scuola_id) REFERENCES scuole(scuola_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE forum (
+CREATE OR REPLACE TABLE forum (
     forum_id INT PRIMARY KEY AUTO_INCREMENT,
     utente_id INT NOT NULL,
     titolo VARCHAR(255) NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE forum (
     FOREIGN KEY (utente_id) REFERENCES utenti(utente_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE commenti (
+CREATE OR REPLACE TABLE commenti (
     commento_id INT PRIMARY KEY AUTO_INCREMENT,
     forum_id INT NOT NULL,
     utente_id INT NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE commenti (
     FOREIGN KEY (utente_id) REFERENCES utenti(utente_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE files (
+CREATE OR REPLACE TABLE files (
     file_id INT PRIMARY KEY AUTO_INCREMENT,
     forum_id INT NOT NULL,
     nome_file VARCHAR(255) NOT NULL,
