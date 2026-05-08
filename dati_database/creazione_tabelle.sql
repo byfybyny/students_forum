@@ -1,5 +1,6 @@
 # gestione del database per la gestione di un sito di forum/post scolastici
 
+DROP DATABASE students_forum;
 CREATE DATABASE IF NOT EXISTS students_forum;
 USE students_forum;
 
