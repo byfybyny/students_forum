@@ -1,5 +1,4 @@
 <?php
-
 $host = '127.0.0.1';
 $dbname = 'students_forum';
 $port = 3306;
