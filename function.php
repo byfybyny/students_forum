@@ -9,17 +9,18 @@ require_once "connessione_db.php";
  * @param int $dimensionePagina Il numero di preferiti da visualizzare per pagina
  * @return array Un array di preferiti per la pagina richiesta
  */
-function getPreferiti(int $id_utente, int $nPagina, int $dimensionePagina) {
+function getPreferitiByUserId(int $id_utente, int $nPagina, int $dimensionePagina) {
     global $pdo;
 
     $offset = ($nPagina - 1) * $dimensionePagina;
 
     $sql = "<<<SQL
-        select f.titolo, f.data_pubblicazione, u.username
+        select f.forum_id, f.titolo, f.data_pubblicazione, u.utente_id, u.username
         from preferiti as p
         join forum as f on f.forum_id = p.forum_id
-        join utenti as u on u.utenti_id = f.utente_id
+        join utenti as u on u.utente_id = f.utente_id
         where p.utente_id = :id_utente
+        order by f.data_pubblicazione desc
         limit :limit offset :offset
     SQL";
 
@@ -37,11 +38,11 @@ function getPreferiti(int $id_utente, int $nPagina, int $dimensionePagina) {
  * @param int $forum_id L'ID del forum da ottenere
  * @return array Un array con i dettagli del forum
  */
-function getForum(int $forum_id){
+function getForumByForumId(int $forum_id){
     global $pdo;
 
     $sql = "<<<SQL
-        select f.titolo, f.contenuto, f.data_pubblicazione, u.username, s.nome as nome_scuola, s.citta as citta_scuola
+        select f.titolo, f.contenuto, f.data_pubblicazione, u.utente_id, u.username, s.scuola_id, s.nome as nome_scuola, s.citta as citta_scuola
         from forum as f
         join utenti as u on f.utente_id = u.utente_id
         join scuole as s on u.scuola_id = s.scuola_id
@@ -60,7 +61,7 @@ function getForum(int $forum_id){
  * @param int $scuola_id L'ID della scuola da ottenere
  * @return array Un array con i dettagli della scuola
  */
-function getScuola(int $scuola_id){
+function getScuolaByScuolaId(int $scuola_id){
     global $pdo;
 
     $sql = "<<<SQL
@@ -77,33 +78,62 @@ function getScuola(int $scuola_id){
 }   
 
 /*
+ * Funzione per ottenere i commenti di un forum
+ * @param int $forum_id L'ID del forum di cui ottenere i commenti
+ * @return array Un array di commenti associati al forum
+ */
+function getCommentiByForumId(int $forum_id){
+    global $pdo;
+
+    $sql = "<<<SQL
+        select c.contenuto, c.data_pubblicazione, c.commento_id_padre, u.utente_id, u.username
+        from commenti as c
+        join utenti as u on c.utente_id = u.utente_id
+        where c.forum_id = :forum_id
+        order by c.data_pubblicazione desc;
+    SQL";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':forum_id', $forum_id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll();
+}
+
+/*
  * Funzione per verificare le credenziali di login
- * @param PDO $pdo L'istanza PDO per la connessione al database
  * @param string $id L'ID dell'utente o della scuola
  * @param string $password La password da verificare
  * @return string|null Restituisce 'scuola' se è una scuola, 'utente' se è un utente, o null se le credenziali non sono valide
  */
-function checkPassword(string $id, string $password) {
+function checkPassword(string $id, string $password): array|false {
     global $pdo;
 
-    //cerca nella tabella "scuole"
-    $stmt = $pdo->prepare("SELECT password_hash FROM scuole WHERE scuola_id = ?");
+    // Cerca in utenti per username
+    $stmt = $pdo->prepare("SELECT utente_id, nome, cognome, password_hash FROM utenti WHERE utente_id = ?");
     $stmt->execute([$id]);
     $row = $stmt->fetch();
 
     if ($row && password_verify($password, $row['password_hash'])) {
-        return 'scuola';
+        return [
+            'id'   => $row['utente_id'],
+            'nome' => $row['nome'] . ' ' . $row['cognome'],
+            'tipo' => 'utente'
+        ];
     }
 
-    //cerca nella tabella "utenti"
-    $stmt = $pdo->prepare("SELECT password_hash FROM utenti WHERE utente_id = ?");
+    // Cerca in scuole per email
+    $stmt = $pdo->prepare("SELECT scuola_id, nome, password_hash FROM scuole WHERE scuola_id = ?");
     $stmt->execute([$id]);
     $row = $stmt->fetch();
 
     if ($row && password_verify($password, $row['password_hash'])) {
-        return 'utente';
+        return [
+            'id'   => $row['scuola_id'],
+            'nome' => $row['nome'],
+            'tipo' => 'scuola'
+        ];
     }
 
-    //Non trovato in nessuna tabella
     return false;
 }
