@@ -124,6 +124,27 @@ function getUtenteByUtenteId(int $utente_id){
 }
 
 /*
+ * Funzione per ottenere i file associati a un forum
+ * @param int $forum_id L'ID del forum di cui ottenere i file
+ * @return array Un array di file associati al forum
+ */
+function getFilesByForumId(int $forum_id) {
+    global $pdo;
+
+    $sql = "<<<SQL
+        select f.file_id, f.nome_file, f.percorso_file
+        from files as f
+        where f.forum_id = :forum_id;
+    SQL";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':forum_id', $forum_id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll();
+}
+
+/*
  * Funzione per verificare le credenziali di login
  * @param string $id L'ID dell'utente o della scuola
  * @param string $password La password da verificare
