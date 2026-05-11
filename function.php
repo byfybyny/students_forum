@@ -145,6 +145,26 @@ function getFilesByForumId(int $forum_id) {
     return $stmt->fetchAll();
 }
 
+function createUtente(string $username, string $name, string $cognome, string $email, string $password){
+    global $pdo;
+
+    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+    $sql = <<<SQL
+        insert into utenti (username, nome, cognome, email, password_hash)
+        values (:username, :nome, :cognome, :email, :password_hash);
+    SQL;
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':username', $username, PDO::PARAM_STR);
+    $stmt->bindValue(':nome', $name, PDO::PARAM_STR);
+    $stmt->bindValue(':cognome', $cognome, PDO::PARAM_STR);
+    $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+    $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
+
+    return $stmt->execute();
+}
+
 /*
  * Funzione per verificare le credenziali di login
  * @param string $id L'ID dell'utente o della scuola
