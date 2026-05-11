@@ -168,7 +168,7 @@ function checkPassword(string $email, string $password): array|false {
     }
 
     // Cerca in scuole per email
-    $stmt = $pdo->prepare("SELECT scuola_id, nome, password_hash FROM scuole WHERE email = ?");
+    $stmt = $pdo->prepare("SELECT email, nome, password_hash FROM scuole WHERE email = ?");
     $stmt->execute([$email]);
     $row = $stmt->fetch();
 
