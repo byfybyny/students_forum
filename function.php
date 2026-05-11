@@ -9,7 +9,7 @@ require_once "connessione_db.php";
  * @param int $dimensionePagina Il numero di preferiti da visualizzare per pagina
  * @return array Un array di preferiti per la pagina richiesta
  */
-function getPreferiti($id_utente, $nPagina, $dimensionePagina) {
+function getPreferiti(int $id_utente, int $nPagina, int $dimensionePagina) {
     global $pdo;
 
     $offset = ($nPagina - 1) * $dimensionePagina;
@@ -34,3 +34,59 @@ function getPreferiti($id_utente, $nPagina, $dimensionePagina) {
     return $stmt->fetchAll();
 }
 
+/*
+ * Funzione per ottenere i dettagli di un forum
+ * @param int $forum_id L'ID del forum da ottenere
+ * @return array Un array con i dettagli del forum
+ */
+function getForum(int $forum_id){
+    global $pdo;
+
+    $sql = "<<<SQL
+        select f.titolo, f.contenuto, f.data_pubblicazione, u.username, s.nome as nome_scuola, s.citta as citta_scuola
+        from forum as f
+        join utenti as u on f.utente_id = u.utente_id
+        join scuole as s on u.scuola_id = s.scuola_id
+        where f.forum_id = :forum_id;
+    SQL";
+
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->bindValue(':forum_id', $forum_id, PDO::PARAM_INT);
+
+    $stmt->execute();
+
+    return $stmt->fetch();
+}
+
+/*
+ * Funzione per verificare le credenziali di login
+ * @param PDO $pdo L'istanza PDO per la connessione al database
+ * @param string $id L'ID dell'utente o della scuola
+ * @param string $password La password da verificare
+ * @return string|null Restituisce 'scuola' se è una scuola, 'utente' se è un utente, o null se le credenziali non sono valide
+ */
+function checkPassword(string $id, string $password) {
+    global $pdo;
+
+    //cerca nella tabella "scuole"
+    $stmt = $pdo->prepare("SELECT password_hash FROM scuole WHERE scuola_id = ?");
+    $stmt->execute([$id]);
+    $row = $stmt->fetch();
+
+    if ($row && password_verify($password, $row['password_hash'])) {
+        return 'scuola';
+    }
+
+    //cerca nella tabella "utenti"
+    $stmt = $pdo->prepare("SELECT password_hash FROM utenti WHERE utente_id = ?");
+    $stmt->execute([$id]);
+    $row = $stmt->fetch();
+
+    if ($row && password_verify($password, $row['password_hash'])) {
+        return 'utente';
+    }
+
+    //Non trovato in nessuna tabella
+    return false;
+}
