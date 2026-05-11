@@ -106,30 +106,30 @@ function getCommentiByForumId(int $forum_id){
  * @param string $password La password da verificare
  * @return string|null Restituisce 'scuola' se è una scuola, 'utente' se è un utente, o null se le credenziali non sono valide
  */
-function checkPassword(string $id, string $password): array|false {
+function checkPassword(string $email, string $password): array|false {
     global $pdo;
 
     // Cerca in utenti per username
-    $stmt = $pdo->prepare("SELECT utente_id, nome, cognome, password_hash FROM utenti WHERE utente_id = ?");
-    $stmt->execute([$id]);
+    $stmt = $pdo->prepare("SELECT email, nome, cognome, password_hash FROM utenti WHERE email = ?");
+    $stmt->execute([$email]);
     $row = $stmt->fetch();
 
     if ($row && password_verify($password, $row['password_hash'])) {
         return [
-            'id'   => $row['utente_id'],
+            'email'   => $row['email'],
             'nome' => $row['nome'] . ' ' . $row['cognome'],
             'tipo' => 'utente'
         ];
     }
 
     // Cerca in scuole per email
-    $stmt = $pdo->prepare("SELECT scuola_id, nome, password_hash FROM scuole WHERE scuola_id = ?");
-    $stmt->execute([$id]);
+    $stmt = $pdo->prepare("SELECT scuola_id, nome, password_hash FROM scuole WHERE email = ?");
+    $stmt->execute([$email]);
     $row = $stmt->fetch();
 
     if ($row && password_verify($password, $row['password_hash'])) {
         return [
-            'id'   => $row['scuola_id'],
+            'email'   => $row['email'],
             'nome' => $row['nome'],
             'tipo' => 'scuola'
         ];
