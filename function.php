@@ -165,6 +165,23 @@ function createUtente(string $username, string $name, string $cognome, string $e
     return $stmt->execute();
 }
 
+function createForum(int $utente_id, string $titolo, string $contenuto){
+    global $pdo;
+
+    $sql = <<<SQL
+        insert into forum (utente_id, titolo, contenuto, data_pubblicazione)
+        values (:utente_id, :titolo, :contenuto, CURRENT_TIMESTAMP());
+    SQL;
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':utente_id', $utente_id, PDO::PARAM_INT);
+    $stmt->bindValue(':titolo', $titolo, PDO::PARAM_STR);
+    $stmt->bindValue(':contenuto', $contenuto, PDO::PARAM_STR);
+
+    return $stmt->execute();
+
+}
+
 /*
  * Funzione per verificare le credenziali di login
  * @param string $id L'ID dell'utente o della scuola
