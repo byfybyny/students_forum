@@ -24,11 +24,9 @@ function getPreferiti(int $id_utente, int $nPagina, int $dimensionePagina) {
     SQL";
 
     $stmt = $pdo->prepare($sql);
-
     $stmt->bindValue(':id_utente', $id_utente, PDO::PARAM_INT);
     $stmt->bindValue(':limit', $dimensionePagina, PDO::PARAM_INT);
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-
     $stmt->execute();
 
     return $stmt->fetchAll();
@@ -51,13 +49,32 @@ function getForum(int $forum_id){
     SQL";
 
     $stmt = $pdo->prepare($sql);
-
     $stmt->bindValue(':forum_id', $forum_id, PDO::PARAM_INT);
-
     $stmt->execute();
 
     return $stmt->fetch();
 }
+
+/*
+ * Funzione per ottenere i dettagli di una scuola
+ * @param int $scuola_id L'ID della scuola da ottenere
+ * @return array Un array con i dettagli della scuola
+ */
+function getScuola(int $scuola_id){
+    global $pdo;
+
+    $sql = "<<<SQL
+        select s.nome, s.indirizzo, s.citta, s.provincia, s.cap, s.email, s.telefono
+        from scuole as s
+        where s.scuola_id = :scuola_id;
+    SQL";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':scuola_id', $scuola_id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetch();
+}   
 
 /*
  * Funzione per verificare le credenziali di login
