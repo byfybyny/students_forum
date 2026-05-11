@@ -145,6 +145,15 @@ function getFilesByForumId(int $forum_id) {
     return $stmt->fetchAll();
 }
 
+/*
+ * Funzione per creare un nuovo utente
+ * @param string $username Il nome utente dell'utente
+ * @param string $name Il nome dell'utente
+ * @param string $cognome Il cognome dell'utente
+ * @param string $email L'email dell'utente
+ * @param string $password La password dell'utente
+ * @return bool Restituisce true se l'utente è stato creato con successo,
+ */
 function createUtente(string $username, string $name, string $cognome, string $email, string $password){
     global $pdo;
 
@@ -165,6 +174,13 @@ function createUtente(string $username, string $name, string $cognome, string $e
     return $stmt->execute();
 }
 
+/*
+ * Funzione per creare un nuovo forum
+ * @param int $utente_id L'ID dell'utente che crea il forum
+ * @param string $titolo Il titolo del forum
+ * @param string $contenuto Il contenuto del forum
+ * @return bool Restituisce true se il forum è stato creato con successo, false
+ */
 function createForum(int $utente_id, string $titolo, string $contenuto){
     global $pdo;
 
