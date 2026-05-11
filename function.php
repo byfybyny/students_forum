@@ -135,6 +135,7 @@ function getFilesByForumId(int $forum_id) {
         select f.file_id, f.nome_file, f.percorso_file
         from files as f
         where f.forum_id = :forum_id;
+        order by f.nome_file asc;
     SQL;
 
     $stmt = $pdo->prepare($sql);
