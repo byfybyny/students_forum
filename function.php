@@ -101,6 +101,29 @@ function getCommentiByForumId(int $forum_id){
 }
 
 /*
+ * Funzione per ottenere i dettagli di un utente
+ * @param int $utente_id L'ID dell'utente da ottenere
+ * @return array Un array con i dettagli dell'utente
+ */
+function getUtenteByUtenteId(int $utente_id){
+    global $pdo;
+
+    $sql = "<<<SQL
+        select u.username, u.nome, u.cognome, u.descrizione, s.scuola_id, s.nome as nome_scuola, s.citta as citta_scuola
+        from utenti as u
+        join scuole as s on u.scuola_id = s.scuola_id
+        where u.utente_id = :utente_id;
+    SQL";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':utente_id', $utente_id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetch();
+
+}
+
+/*
  * Funzione per verificare le credenziali di login
  * @param string $id L'ID dell'utente o della scuola
  * @param string $password La password da verificare
