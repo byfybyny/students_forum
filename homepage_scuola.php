@@ -4,6 +4,7 @@ require_once "function.php";
 global $pdo;
 
 
+
 $email = $_SESSION['email'] ?? '';
 $nome = $_SESSION['nome'] ?? '';
 $tipo = $_SESSION['tipo'] ?? '';
