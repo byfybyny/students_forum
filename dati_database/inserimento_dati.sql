@@ -29,6 +29,31 @@ INSERT INTO forum (utente_id, titolo, contenuto) VALUES
 (5, 'Esperimento sulla fotosintesi — risultati', 'Abbiamo fatto l''esperimento sulla fotosintesi in laboratorio. Posto i risultati: la foglia esposta alla luce ha prodotto il 40% di ossigeno in più rispetto a quella in ombra. Voi che risultati avete ottenuto?'),
 (1, 'Dubbio sui limiti — forma indeterminata 0/0', 'Non riesco a capire quando applicare De L''Hopital e quando invece conviene raccogliere. Qualcuno ha un metodo per riconoscere i casi?');
 
+insert into forum(utente_id, titolo, contenuto, data_pubblicazione)
+values(4, 'Miglior Sistema Operativo', 'Ciao potete suggerirmi qual è il miglior sistema operativo per uno studente alle prime armi?', '2026-05-21 12:00:00')
+
+INSERT INTO forum (utente_id, titolo, contenuto, data_pubblicazione)
+VALUES
+(2, 'Primo linguaggio di programmazione',
+ 'Ciao a tutti! Sono al primo anno di informatica e vorrei imparare a programmare. Quale linguaggio mi consigliate per cominciare? Ho sentito parlare di Python, Java e C++.',
+ '2026-05-21 14:30:00'),
+
+(5, 'Miglior editor di codice per principianti',
+ 'Salve! Sto iniziando a studiare programmazione e non so quale editor usare. Ho visto che esistono VS Code, Sublime Text e altri. Qual è il più adatto per chi è alle prime armi?',
+ '2026-05-22 09:15:00'),
+
+(1, 'Antivirus gratuito e affidabile',
+ 'Ciao a tutti, volevo chiedervi se conoscete un buon antivirus gratuito per Windows. Ne ho provati diversi ma non so quale sia veramente efficace. Avete esperienze da condividere?',
+ '2026-05-22 16:45:00'),
+
+(3, 'Miglior browser per non rallentare il PC',
+ 'Ho un portatile non molto potente e Chrome mi occupa troppa RAM. Conoscete un browser leggero ma completo? Sto valutando Firefox o Edge ma non so quale scegliere.',
+ '2026-05-23 10:00:00'),
+
+(4, 'Backup dei file: come farlo correttamente?',
+ 'Ciao! Ho perso dei file importanti per un guasto al disco e ora voglio imparare a fare backup in modo regolare. Quali strumenti o metodi usate voi? Cloud o disco esterno?',
+ '2026-05-23 18:20:00');
+
 -- =====================
 -- COMMENTI
 -- =====================
