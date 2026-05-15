@@ -175,6 +175,29 @@ function createUtente(string $username, string $name, string $cognome, string $e
 }
 
 /*
+ * Funzione per ottenere l'ID di un utente dato il suo email
+ * @param string $email L'email dell'utente di cui ottenere l'ID
+ * @return int|null Restituisce l'ID dell'utente se trovato, altrimenti null
+ */
+function getUserIdByEmail(string $email) {
+    global $pdo;
+
+    $sql = <<<SQL
+        select utente_id
+        from utenti
+        where email = :email;
+    SQL;
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+    $stmt->execute();
+
+    $row = $stmt->fetch();
+
+    return $row ? (int)$row['utente_id'] : null;
+}
+
+/*
  * Funzione per creare un nuovo forum
  * @param int $utente_id L'ID dell'utente che crea il forum
  * @param string $titolo Il titolo del forum
