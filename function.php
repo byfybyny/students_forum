@@ -78,29 +78,6 @@ function getScuolaByScuolaId(int $scuola_id){
 }   
 
 /*
- * Funzione per ottenere i commenti di un forum
- * @param int $forum_id L'ID del forum di cui ottenere i commenti
- * @return array Un array di commenti associati al forum
- */
-function getCommentiByForumId(int $forum_id){
-    global $pdo;
-
-    $sql = <<<SQL
-        select c.contenuto, c.data_pubblicazione, c.commento_id_padre, u.utente_id, u.username
-        from commenti as c
-        join utenti as u on c.utente_id = u.utente_id
-        where c.forum_id = :forum_id
-        order by c.data_pubblicazione desc;
-    SQL;
-
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':forum_id', $forum_id, PDO::PARAM_INT);
-    $stmt->execute();
-
-    return $stmt->fetchAll();
-}
-
-/*
  * Funzione per ottenere i dettagli di un utente
  * @param int $utente_id L'ID dell'utente da ottenere
  * @return array Un array con i dettagli dell'utente
