@@ -5,7 +5,7 @@
 -- SCUOLE
 -- =====================
 INSERT INTO scuole (nome, indirizzo, citta, provincia, cap, email, telefono, password_hash) VALUES
-('Liceo Scientifico Galileo Galilei', 'Via Roma 1', 'Milano', 'MI', '20100', 'mario.rossi@studenti.it', '0212345678', '$2y$10$8/qySeKwrFXNrzKggTxRSeQ8ViijLoiLCeuibd9l6fsLOUA5ROgLK'),           #Galilei2024!
+('Liceo Scientifico Galileo Galilei', 'Via Roma 1', 'Milano', 'MI', '20100', 'info@galilei-mi.edu.it', '0212345678', '$2y$10$8/qySeKwrFXNrzKggTxRSeQ8ViijLoiLCeuibd9l6fsLOUA5ROgLK'),           #Galilei2024!
 ('Istituto Tecnico Leonardo da Vinci', 'Corso Italia 45', 'Roma', 'RM', '00100', 'segreteria@davinci-rm.edu.it', '0698765432', '$2y$10$tA6akF6kOVYA9qVMAKokkedEn9bFEmZlVyHFdESIjNBWDnaDR/tfS'), #DaVinci2024!
 ('Liceo Classico Dante Alighieri', 'Piazza Dante 3', 'Napoli', 'NA', '80100', 'admin@dante-na.edu.it', '0817654321', '$2y$10$F4sKv6KMIEYVUvSw5VuBxeiYqN.oquYCEXrrxKjJb1unJKTHYIKnq');           #Dante2024!
 
