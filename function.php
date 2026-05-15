@@ -42,7 +42,7 @@ function getForumByForumId(int $forum_id){
     global $pdo;
 
     $sql = <<<SQL
-        select f.titolo, f.contenuto, f.data_pubblicazione, u.utente_id, u.username, s.scuola_id, s.nome as nome_scuola, s.citta as citta_scuola
+        select f.titolo, f.contenuto, date(f.data_pubblicazione) as data_pubblicazione, time(f.data_pubblicazione) as ora_pubblicazione, u.utente_id, u.username, s.scuola_id, s.nome as nome_scuola, s.citta as citta_scuola
         from forum as f
         join utenti as u on f.utente_id = u.utente_id
         join scuole as s on u.scuola_id = s.scuola_id
