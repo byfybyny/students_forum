@@ -296,3 +296,20 @@ function checkPassword(string $email, string $password): array|false {
 
     return false;
 }
+
+function getLast30Forum() {
+    global $pdo;
+
+    $sql = <<<SQL
+        select f.forum_id, f.titolo, f.data_pubblicazione, u.utente_id, u.username
+        from forum as f
+        join utenti as u on f.utente_id = u.utente_id
+        order by f.data_pubblicazione desc
+        limit 30;
+    SQL;
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetchAll();
+}
