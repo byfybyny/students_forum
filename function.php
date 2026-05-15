@@ -242,7 +242,7 @@ function getCommentsFromCommentId(int $commento_id_padre, int $nPagina, int $dim
     $offset = ($nPagina - 1) * $dimensionePagina;
 
     $sql = <<<SQL
-        select c.commento_id, c.contenuto, c.data_pubblicazione, c.commento_id_padre, u.utente_id, u.username, (select count(*) from commenti as c2 where c2.commento_id_padre = c.commento_id) as num_risposte
+        select c.commento_id, c.contenuto, date(c.data_pubblicazione) as data_pubblicazione, time(c.data_pubblicazione) as ora_pubblicazione, c.commento_id_padre, u.utente_id, u.username, (select count(*) from commenti as c2 where c2.commento_id_padre = c.commento_id) as num_risposte
         from commenti as c
         join utenti as u on c.utente_id = u.utente_id
         where c.commento_id_padre = :commento_id_padre
