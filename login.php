@@ -5,10 +5,10 @@ if (isset($_SESSION['email'], $_SESSION['tipo'])) {
     header('Location: ' . ($_SESSION['tipo'] === 'scuola' ? 'homepage_scuola.php' : 'homepage_utente.php'));
     exit;
 }
- 
-$errore = "";
 
 require_once "function.php";
+
+$errore = "";
 
 if (($_POST['btnAction'] ?? '') === 'login') {
     $email = $_POST['email'] ?? '';
