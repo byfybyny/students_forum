@@ -222,7 +222,7 @@ function getCommentsFromForumId(int $forum_id, int $nPagina, int $dimensionePagi
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':forum_id', $forum_id, PDO::PARAM_INT);
-    $stmt->bindValue(':limit', $dimensionePagina, PDO::PARAM_INT);
+    $stmt->bindValue(':limit', $dimensionePagina + 1, PDO::PARAM_INT);
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
 
@@ -253,7 +253,7 @@ function getCommentsFromCommentId(int $commento_id_padre, int $nPagina, int $dim
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':commento_id_padre', $commento_id_padre, PDO::PARAM_INT);
-    $stmt->bindValue(':limit', $dimensionePagina, PDO::PARAM_INT);
+    $stmt->bindValue(':limit', $dimensionePagina + 1, PDO::PARAM_INT);
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
 

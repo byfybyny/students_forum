@@ -32,6 +32,20 @@ $commenti = getCommentsFromForumId($forum_id, $nPagina, 10);
 //dati del file
 $files = getFilesByForumId($forum_id);
 
+// controllo se è l'ultima pagina
+$isLastPage = false;
+if($commenti !== null){
+    if(count($commenti) != 11){
+        $isLastPage = true;
+    }
+    else {
+        $lastElement = array_pop($commenti);
+        if($lastElement === false){
+            $isLastPage = true;
+        }
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -63,8 +77,8 @@ $files = getFilesByForumId($forum_id);
                 <?php
                 if($commento['num_risposte'] > 0) {
                     ?>
-                    <tr>
-                        <td colspan="3" id="replies<?=$commento['commento_id']?>">
+                    <tr id="replies<?=$commento['commento_id']?>">
+                        <td colspan="3">
                             <button
                                 hx-get="ottieni_risposte.php?commento_id=<?=$commento['commento_id']?>&nPagina=1"
                                 hx-target="#replies<?=$commento['commento_id']?>"
@@ -76,7 +90,19 @@ $files = getFilesByForumId($forum_id);
                     <?php
                 }
             }
+            if(!$isLastPage) {
             ?>
+            <tr id="more<?=$commento['commento_id']?>">
+                <td colspan="3">
+                    <button
+                        hx-get="commenti.php?forum_id=<?=$forum_id?>&nPagina=<?=($nPagina + 1)?>"
+                        hx-target="#more<?=$commento['commento_id']?>"
+                        hx-swap="outerHTML"> Vedi di più
+                    </button>
+                    <div id="replies_<?=$commento['commento_id']?>"></div>
+                </td>
+            </tr>
+            <?php } ?>
         </table>
     </body>
 </html>
