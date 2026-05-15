@@ -2,6 +2,7 @@
 
 require_once "function.php";
 
+// dati dell'utente
 session_start();
 $email = $_SESSION['email'] ?? null;
 $tipo = $_SESSION['tipo'] ?? null;
@@ -11,6 +12,7 @@ if(!isset($email, $tipo)) {
     exit;
 }
 
+// dati del forum
 $forum_id = $_REQUEST['forum_id'] ?? null;
 $forum = getForumByForumId($forum_id);
 
@@ -23,6 +25,9 @@ if ($forum_id === null || $forum === false) {
     exit;
 }
 
+//dati del file
+$files = getFilesByForumId($forum_id);
+
 ?>
 
 <!DOCTYPE html>
@@ -33,10 +38,8 @@ if ($forum_id === null || $forum === false) {
 
     <body>
         <h1><?=$forum['titolo']?></h1>
-        <p><?=$forum['descrizione']?></p>
-
-        <!-- Qui puoi aggiungere il codice per visualizzare i commenti e il form per aggiungere nuovi commenti -->
-
+        <h3>creato da <?=$forum['username']?> il <?=$forum['data_pubblicazione']?></h3>
+        <p><?=$forum['contenuto']?></p>
     </body>
 </html>
 
