@@ -205,7 +205,7 @@ function createForum(int $utente_id, string $titolo, string $contenuto){
  * @param int $dimensionePagina Il numero di commenti da visualizzare per pagina
  * @return array Un array di commenti associati al forum per la pagina richiesta
  */
-function getCommentsFromForum(int $forum_id, int $nPagina, int $dimensionePagina) {
+function getCommentsFromForumId(int $forum_id, int $nPagina, int $dimensionePagina) {
     global $pdo;
 
     $offset = ($nPagina - 1) * $dimensionePagina;
@@ -236,7 +236,7 @@ function getCommentsFromForum(int $forum_id, int $nPagina, int $dimensionePagina
  * @param int $dimensionePagina Il numero di commenti da visualizzare per pagina
  * @return array Un array di commenti associati al commento padre per la pagina richiesta
  */
-function getCommentsFromComment(int $commento_id_padre, int $nPagina, int $dimensionePagina){
+function getCommentsFromCommentId(int $commento_id_padre, int $nPagina, int $dimensionePagina){
     global $pdo;
 
     $offset = ($nPagina - 1) * $dimensionePagina;
