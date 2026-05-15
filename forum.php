@@ -23,6 +23,21 @@ if ($forum_id === null || $forum === false) {
     exit;
 }
 
+?>
 
+<!DOCTYPE html>
+<html lang="it">
+    <head></head></head>
+        <title>Forum: <?=$forum['titolo']?></title>
+    </head>
+
+    <body>
+        <h1><?=$forum['titolo']?></h1>
+        <p><?=$forum['descrizione']?></p>
+
+        <!-- Qui puoi aggiungere il codice per visualizzare i commenti e il form per aggiungere nuovi commenti -->
+
+    </body>
+</html>
 
 
