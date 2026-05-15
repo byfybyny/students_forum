@@ -64,11 +64,11 @@ $files = getFilesByForumId($forum_id);
                 if($commento['num_risposte'] > 0) {
                     ?>
                     <tr>
-                        <td colspan="3">
+                        <td colspan="3" id="replies<?=$commento['commento_id']?>">
                             <button
-                                hx-get="get_replies.php?commento_id=<?=$commento['commento_id']?>&nPagina=1"
-                                hx-target="#replies_<?=$commento['commento_id']?>"
-                                hx-swap="afterend">Visualizza risposte (<?=$commento['num_risposte']?>)
+                                hx-get="ottieni_risposte.php?commento_id=<?=$commento['commento_id']?>&nPagina=1"
+                                hx-target="#replies<?=$commento['commento_id']?>"
+                                hx-swap="outerHTML"> Vedi risposte
                             </button>
                             <div id="replies_<?=$commento['commento_id']?>"></div>
                         </td>
