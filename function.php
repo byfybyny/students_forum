@@ -145,6 +145,15 @@ function getFilesByForumId(int $forum_id) {
     return $stmt->fetchAll();
 }
 
+/*
+ * Funzione per creare un nuovo utente
+ * @param string $username Il nome utente dell'utente
+ * @param string $name Il nome dell'utente
+ * @param string $cognome Il cognome dell'utente
+ * @param string $email L'email dell'utente
+ * @param string $password La password dell'utente
+ * @return bool Restituisce true se l'utente è stato creato con successo,
+ */
 function createUtente(string $username, string $name, string $cognome, string $email, string $password){
     global $pdo;
 
@@ -165,6 +174,13 @@ function createUtente(string $username, string $name, string $cognome, string $e
     return $stmt->execute();
 }
 
+/*
+ * Funzione per creare un nuovo forum
+ * @param int $utente_id L'ID dell'utente che crea il forum
+ * @param string $titolo Il titolo del forum
+ * @param string $contenuto Il contenuto del forum
+ * @return bool Restituisce true se il forum è stato creato con successo, false
+ */
 function createForum(int $utente_id, string $titolo, string $contenuto){
     global $pdo;
 
@@ -180,6 +196,67 @@ function createForum(int $utente_id, string $titolo, string $contenuto){
 
     return $stmt->execute();
 
+}
+
+/*
+ * Funzione per ottenere i commenti di un forum con paginazione
+ * @param int $forum_id L'ID del forum di cui ottenere i commenti
+ * @param int $nPagina Il numero della pagina da visualizzare
+ * @param int $dimensionePagina Il numero di commenti da visualizzare per pagina
+ * @return array Un array di commenti associati al forum per la pagina richiesta
+ */
+function getCommentsFromForum(int $forum_id, int $nPagina, int $dimensionePagina) {
+    global $pdo;
+
+    $offset = ($nPagina - 1) * $dimensionePagina;
+
+    $sql = <<<SQL
+        select c.commento_id, c.contenuto, c.data_pubblicazione, c.commento_id_padre, u.utente_id, u.username, (select count(*) from commenti as c2 where c2.commento_id_padre = c.commento_id) as num_risposte
+        from commenti as c
+        join utenti as u on c.utente_id = u.utente_id
+        where c.forum_id = :forum_id
+        order by c.data_pubblicazione desc
+        limit :limit offset :offset;
+    SQL;
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':forum_id', $forum_id, PDO::PARAM_INT);
+    $stmt->bindValue(':limit', $dimensionePagina, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll();
+
+}
+
+/*
+ * Funzione per ottenere i commenti di un commento con paginazione
+ * @param int $commento_id_padre L'ID del commento padre di cui ottenere i commenti
+ * @param int $nPagina Il numero della pagina da visualizzare
+ * @param int $dimensionePagina Il numero di commenti da visualizzare per pagina
+ * @return array Un array di commenti associati al commento padre per la pagina richiesta
+ */
+function getCommentsFromComment(int $commento_id_padre, int $nPagina, int $dimensionePagina){
+    global $pdo;
+
+    $offset = ($nPagina - 1) * $dimensionePagina;
+
+    $sql = <<<SQL
+        select c.commento_id, c.contenuto, c.data_pubblicazione, c.commento_id_padre, u.utente_id, u.username, (select count(*) from commenti as c2 where c2.commento_id_padre = c.commento_id) as num_risposte
+        from commenti as c
+        join utenti as u on c.utente_id = u.utente_id
+        where c.commento_id_padre = :commento_id_padre
+        order by c.data_pubblicazione desc
+        limit :limit offset :offset;
+    SQL;
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':commento_id_padre', $commento_id_padre, PDO::PARAM_INT);
+    $stmt->bindValue(':limit', $dimensionePagina, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll();
 }
 
 /*
