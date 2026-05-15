@@ -42,7 +42,7 @@ function getForumByForumId(int $forum_id){
     global $pdo;
 
     $sql = <<<SQL
-        select f.titolo, f.contenuto, f.data_pubblicazione, u.utente_id, u.username, s.scuola_id, s.nome as nome_scuola, s.citta as citta_scuola
+        select f.titolo, f.contenuto, date(f.data_pubblicazione) as data_pubblicazione, time(f.data_pubblicazione) as ora_pubblicazione, u.utente_id, u.username, s.scuola_id, s.nome as nome_scuola, s.citta as citta_scuola
         from forum as f
         join utenti as u on f.utente_id = u.utente_id
         join scuole as s on u.scuola_id = s.scuola_id
@@ -205,13 +205,13 @@ function createForum(int $utente_id, string $titolo, string $contenuto){
  * @param int $dimensionePagina Il numero di commenti da visualizzare per pagina
  * @return array Un array di commenti associati al forum per la pagina richiesta
  */
-function getCommentsFromForum(int $forum_id, int $nPagina, int $dimensionePagina) {
+function getCommentsFromForumId(int $forum_id, int $nPagina, int $dimensionePagina) {
     global $pdo;
 
     $offset = ($nPagina - 1) * $dimensionePagina;
 
     $sql = <<<SQL
-        select c.commento_id, c.contenuto, c.data_pubblicazione, c.commento_id_padre, u.utente_id, u.username, (select count(*) from commenti as c2 where c2.commento_id_padre = c.commento_id) as num_risposte
+        select c.commento_id, c.contenuto, date(c.data_pubblicazione) as data_pubblicazione, time(c.data_pubblicazione) as ora_pubblicazione, c.commento_id_padre, u.utente_id, u.username, (select count(*) from commenti as c2 where c2.commento_id_padre = c.commento_id) as num_risposte
         from commenti as c
         join utenti as u on c.utente_id = u.utente_id
         where c.forum_id = :forum_id
@@ -236,7 +236,7 @@ function getCommentsFromForum(int $forum_id, int $nPagina, int $dimensionePagina
  * @param int $dimensionePagina Il numero di commenti da visualizzare per pagina
  * @return array Un array di commenti associati al commento padre per la pagina richiesta
  */
-function getCommentsFromComment(int $commento_id_padre, int $nPagina, int $dimensionePagina){
+function getCommentsFromCommentId(int $commento_id_padre, int $nPagina, int $dimensionePagina){
     global $pdo;
 
     $offset = ($nPagina - 1) * $dimensionePagina;
