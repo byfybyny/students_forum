@@ -86,7 +86,7 @@ function getUtenteByUtenteId(int $utente_id){
     global $pdo;
 
     $sql = <<<SQL
-        select u.username, u.nome, u.cognome, u.descrizione, s.scuola_id, s.nome as nome_scuola, s.citta as citta_scuola
+        select u.username, u.nome, u.cognome, u.contenuto, s.scuola_id, s.nome as nome_scuola, s.citta as citta_scuola
         from utenti as u
         join scuole as s on u.scuola_id = s.scuola_id
         where u.utente_id = :utente_id;
