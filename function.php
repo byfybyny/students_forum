@@ -215,6 +215,7 @@ function getCommentsFromForumId(int $forum_id, int $nPagina, int $dimensionePagi
         from commenti as c
         join utenti as u on c.utente_id = u.utente_id
         where c.forum_id = :forum_id
+        and c.commento_id_padre is null
         order by c.data_pubblicazione desc
         limit :limit offset :offset;
     SQL;
