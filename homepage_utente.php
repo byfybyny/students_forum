@@ -25,6 +25,8 @@ $ultimi30Forum = getLast30Forum();
         <p>Questa è la homepage del tuo profilo.</p>
 
         <a href="logout.php">Logout</a>
+        <br>
+        <a href="modifica_profilo_utente.php">Modifica Profilo</a>
 
         <table>
             <thead>
