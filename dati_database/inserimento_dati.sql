@@ -27,7 +27,7 @@ INSERT INTO forum (utente_id, titolo, contenuto) VALUES
 (3, 'Risorse per imparare Python', 'Volevo condividere con voi alcune risorse utili per imparare Python che ho trovato online. Quali usate voi? Io ho iniziato con la documentazione ufficiale ma è un po'' ostica per i principianti.'),
 (2, 'Analisi del Paradiso di Dante — Canto III', 'Per chi sta preparando la verifica su Dante: ho fatto un''analisi del Canto III del Paradiso. Parliamone insieme, magari integriamo le nostre versioni!'),
 (5, 'Esperimento sulla fotosintesi — risultati', 'Abbiamo fatto l''esperimento sulla fotosintesi in laboratorio. Posto i risultati: la foglia esposta alla luce ha prodotto il 40% di ossigeno in più rispetto a quella in ombra. Voi che risultati avete ottenuto?'),
-(1, 'Dubbio sui limiti — forma indeterminata 0/0', 'Non riesco a capire quando applicare De L''Hopital e quando invece conviene raccogliere. Qualcuno ha un metodo per riconoscere i casi?');
+(1, 'Dubbio sui limiti — forma indeterminata 0/0', 'Non riesco a capire quando applicare De L''Hopital e quando invece conviene raccogliere. Qualcuno ha un metodo per riconoscere i casi?'),
 (1, 'Come studiare meglio per gli esami?', NOW()),
 (2, 'Migliori app per prendere appunti', NOW()),
 (3, 'Consigli per la tesi di laurea', NOW()),
@@ -80,7 +80,7 @@ INSERT INTO forum (utente_id, titolo, contenuto) VALUES
 (5, 'Come funziona il protocollo HTTP?', NOW());
 
 insert into forum(utente_id, titolo, contenuto, data_pubblicazione)
-values(4, 'Miglior Sistema Operativo', 'Ciao potete suggerirmi qual è il miglior sistema operativo per uno studente alle prime armi?', '2026-05-21 12:00:00')
+values(4, 'Miglior Sistema Operativo', 'Ciao potete suggerirmi qual è il miglior sistema operativo per uno studente alle prime armi?', '2026-05-21 12:00:00');
 
 INSERT INTO forum (utente_id, titolo, contenuto, data_pubblicazione)
 VALUES
