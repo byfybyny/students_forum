@@ -298,19 +298,17 @@ function checkPassword(string $email, string $password): array|false {
     return false;
 }
 
-function getLast30Forum() {
+function getLast5Forum(int $offset = 0, int $limit = 5): array {
     global $pdo;
-
-    $sql = <<<SQL
-        select f.forum_id, f.titolo, f.data_pubblicazione, u.utente_id, u.username
-        from forum as f
-        join utenti as u on f.utente_id = u.utente_id
-        order by f.data_pubblicazione desc
-        limit 30;
-    SQL;
-
-    $stmt = $pdo->prepare($sql);
+    $stmt = $pdo->prepare("
+        SELECT f.forum_id, f.titolo, f.data_pubblicazione, u.username
+        FROM forum f
+        JOIN utenti u ON f.utente_id = u.utente_id
+        ORDER BY f.data_pubblicazione DESC
+        LIMIT :limit OFFSET :offset
+    ");
+    $stmt->bindValue(':limit',  $limit,  PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
-
-    return $stmt->fetchAll();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
