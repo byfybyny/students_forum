@@ -51,5 +51,9 @@ if (($_POST['btnAction'] ?? '') === 'login') {
             <input type="password" name="password" placeholder="Password" required><br>
             <button type="submit" name="btnAction" value="login">Accedi</button>
         </form> 
+        <br>
+        <a href="registrazione_utente.php">Registrati come studente</a>
+        <br>
+        <a href="registrazione_scuola.php">Registrati come scuola</a>
     </body>
 </html>
