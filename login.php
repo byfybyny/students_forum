@@ -22,6 +22,7 @@ if (($_POST['btnAction'] ?? '') === 'login') {
 
         if ($log !== false) {
             $_SESSION['email'] = $log['email'];
+            $_SESSION['utente_id'] = $log['utente_id'];
             $_SESSION['tipo'] = $log['tipo'];
             $_SESSION['nome'] = $log['nome'];
             if ($log['tipo'] === 'scuola') {
