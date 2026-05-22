@@ -270,7 +270,7 @@ function checkPassword(string $email, string $password): array|false {
     global $pdo;
 
     // Cerca in utenti per username
-    $stmt = $pdo->prepare("SELECT email, nome, cognome, password_hash FROM utenti WHERE email = ?");
+    $stmt = $pdo->prepare("SELECT utente_id, email, nome, cognome, password_hash FROM utenti WHERE email = ?");
     $stmt->execute([$email]);
     $row = $stmt->fetch();
 
@@ -278,7 +278,8 @@ function checkPassword(string $email, string $password): array|false {
         return [
             'email'   => $row['email'],
             'nome' => $row['nome'] . ' ' . $row['cognome'],
-            'tipo' => 'utente'
+            'tipo' => 'utente',
+            'utente_id' => $row['utente_id']
         ];
     }
 

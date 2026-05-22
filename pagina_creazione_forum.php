@@ -4,15 +4,13 @@ require_once "function.php";
 
 session_start();
 
-$email = $_SESSION['email'] ?? null;
+$utente_id = $_SESSION['utente_id'] ?? null;
 $errore = $_REQUEST['errore'] ?? null;
 
-if($email === null) {
+if($utente_id === null) {
     header('Location: login.php');
     exit;
 }
-
-$utente_id = getUserIdByEmail($email);
 
 ?>
 <html>
