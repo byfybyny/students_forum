@@ -37,6 +37,13 @@ $files = getFilesByForumId($forum_id);
         <h3>creato da <?=$forum['username']?> il <?=$forum['data_pubblicazione']?> alle <?=$forum['ora_pubblicazione']?></h3>
         <p><?=$forum['contenuto']?></p>
 
+        <button id="aggiungi_commento"
+                hx-get="pagina_aggiunta_commento.php?forum_id=<?=$forum_id?>"
+                hx-target="#aggiungi_commento"
+                hx-trigger="click"
+                hx-swap="outerHTML">
+                aggiungi commento</button>
+
         <table>
             <tr>
                 <th>contenuto</th>

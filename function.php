@@ -341,3 +341,24 @@ function getNumStudenti(int $scuola_id): int {
     $stmt->execute([':scuola_id' => $scuola_id]);
     return (int)$stmt->fetchColumn();
 }
+
+function createCommento(int $utente_id, int $forum_id, ?int $commento_id_padre, string $contenuto): bool {
+    global $pdo;
+
+    $sql = <<<SQL
+        insert into commenti (utente_id, forum_id, commento_id_padre, contenuto, data_pubblicazione)
+        values (:utente_id, :forum_id, :commento_id_padre, :contenuto, CURRENT_TIMESTAMP());
+    SQL;
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':utente_id', $utente_id, PDO::PARAM_INT);
+    $stmt->bindValue(':forum_id', $forum_id, PDO::PARAM_INT);
+    if ($commento_id_padre === null) {
+        $stmt->bindValue(':commento_id_padre', null, PDO::PARAM_NULL);
+    } else {
+        $stmt->bindValue(':commento_id_padre', $commento_id_padre, PDO::PARAM_INT);
+    }
+    $stmt->bindValue(':contenuto', $contenuto, PDO::PARAM_STR);
+
+    return $stmt->execute();
+}
