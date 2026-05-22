@@ -13,7 +13,7 @@ $commento_id = $_REQUEST['commento_id'] ?? null;
     <tr id=commenti>
         <td colspan="3">
             <div
-                hx-get="commenti_risposte.php?commento_id=<?=$commento_id?>&nPagina=1"
+                hx-get="commenti.php?commento_id=<?=$commento_id?>&nPagina=1"
                 hx-target="#commenti"
                 hx-trigger="revealed"
                 hx-swap="outerHTML">

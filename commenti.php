@@ -3,9 +3,17 @@
 require_once "function.php";
 
 $forum_id = $_REQUEST['forum_id'] ?? null;
+$commento_id = $_REQUEST['commento_id'] ?? null;
 $nPagina = $_REQUEST['nPagina'] ?? 1;
 
-$commenti = getCommentsFromForumId($forum_id, $nPagina, 10);
+if($commento_id == null){
+    $commenti = getCommentsFromForumId($forum_id, $nPagina, 10);
+}
+else{
+    $commenti = getCommentsFromCommentId($commento_id, $nPagina, 10);
+}
+
+
 
 
 // controllo se è l'ultima pagina
@@ -50,7 +58,7 @@ if(!$isLastPage) {
 <tr id="more<?=$commento['commento_id']?>">
     <td colspan="3">
         <button
-            hx-get="commenti.php?forum_id=<?=$forum_id?>&nPagina=<?=($nPagina + 1)?>"
+            hx-get="commenti.php?forum_id=<?=$forum_id?>&commento_id=<?=$commento['commento_id']?>&nPagina=<?=($nPagina + 1)?>"
             hx-target="#more<?=$commento['commento_id']?>"
             hx-swap="outerHTML"> Vedi di più
         </button>
