@@ -21,10 +21,12 @@ if (($_POST['btnAction'] ?? '') === 'login') {
         $log = checkPassword($email, $password);
 
         if ($log !== false) {
-            
             $_SESSION['email'] = $log['email'];
             $_SESSION['tipo'] = $log['tipo'];
             $_SESSION['nome'] = $log['nome'];
+            if ($log['tipo'] === 'scuola') {
+                $_SESSION['scuola_id'] = $log['scuola_id'];
+            }
 
             header('Location: ' . ($log['tipo'] === 'scuola' ? 'homepage_scuola.php' : 'homepage_utente.php'));
             exit;
@@ -38,9 +40,7 @@ if (($_POST['btnAction'] ?? '') === 'login') {
 <Doctype html>
 <html lang="it">      
     <head>
-
-
-
+        <title>Login</title>
     </head>
 
     <body>
@@ -52,9 +52,4 @@ if (($_POST['btnAction'] ?? '') === 'login') {
             <button type="submit" name="btnAction" value="login">Accedi</button>
         </form> 
     </body>
-
-
-
-
-
 </html>

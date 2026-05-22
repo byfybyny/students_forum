@@ -283,7 +283,7 @@ function checkPassword(string $email, string $password): array|false {
     }
 
     // Cerca in scuole per email
-    $stmt = $pdo->prepare("SELECT email, nome, password_hash FROM scuole WHERE email = ?");
+    $stmt = $pdo->prepare("SELECT scuola_id, email, nome, password_hash FROM scuole WHERE email = ?");
     $stmt->execute([$email]);
     $row = $stmt->fetch();
 
@@ -291,7 +291,8 @@ function checkPassword(string $email, string $password): array|false {
         return [
             'email'   => $row['email'],
             'nome' => $row['nome'],
-            'tipo' => 'scuola'
+            'tipo' => 'scuola',
+            'scuola_id' => $row['scuola_id']
         ];
     }
 
@@ -311,4 +312,32 @@ function getLast5Forum(int $offset = 0, int $limit = 5): array {
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Forum solo degli studenti della scuola
+function getForumByScuola(int $scuola_id, int $offset = 0, int $limit = 5): array {
+    global $pdo;
+    $stmt = $pdo->prepare("
+        SELECT f.forum_id, f.titolo, f.data_pubblicazione, u.username
+        FROM forum f
+        JOIN utenti u ON f.utente_id = u.utente_id
+        WHERE u.scuola_id = :scuola_id
+        ORDER BY f.data_pubblicazione DESC
+        LIMIT :limit OFFSET :offset
+    ");
+    $stmt->bindValue(':scuola_id', $scuola_id, PDO::PARAM_INT);
+    $stmt->bindValue(':limit',     $limit,     PDO::PARAM_INT);
+    $stmt->bindValue(':offset',    $offset,    PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Numero studenti iscritti alla scuola
+function getNumStudenti(int $scuola_id): int {
+    global $pdo;
+    $stmt = $pdo->prepare("
+        SELECT COUNT(*) FROM utenti WHERE scuola_id = :scuola_id
+    ");
+    $stmt->execute([':scuola_id' => $scuola_id]);
+    return (int)$stmt->fetchColumn();
 }
