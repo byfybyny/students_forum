@@ -6,7 +6,7 @@ require_once "function.php";
 session_start();
 $email = $_SESSION['email'] ?? null;
 
-if(!isset($email, $tipo)) {
+if(!isset($email)) {
     header('Location: login.php');
     exit;
 }
