@@ -53,7 +53,7 @@ $files = getFilesByForumId($forum_id);
             <tr id=commenti>
                 <td colspan="3">
                     <div
-                        hx-get="commenti.php?forum_id=<?=$forum_id?>&nPagina=1"
+                        hx-get="commenti.php?forum_id=<?=$forum_id?>"
                         hx-target="#commenti"
                         hx-trigger="revealed"
                         hx-swap="outerHTML">
