@@ -13,45 +13,37 @@ else{
     $commenti = getCommentsFromCommentId($commento_id, $nPagina, 11);
 }
 
-
+$commenti = $commenti ?? [];
 
 
 // controllo se è l'ultima pagina
 $isLastPage = false;
-if($commenti !== null){
-    if(count($commenti) !== 11){
-        $isLastPage = true;
-    }
-    else {
-        $lastElement = array_pop($commenti);
-        if($lastElement === false){
-            $isLastPage = true;
-        }
-    }
+if(count($commenti) !== 11){
+    $isLastPage = true;
+} else {
+    array_pop($commenti);
 }
 
-if ($commenti !== null) {
-    foreach($commenti as $commento) {
+foreach($commenti as $commento) {
+    ?>
+    <tr>
+        <td><?=$commento['contenuto']?></td>
+        <td><?=$commento['username']?></td>
+        <td><?=$commento['data_pubblicazione']?> alle <?=$commento['ora_pubblicazione']?></td>
+    </tr>
+    <?php
+    if($commento['num_risposte'] > 0) {
         ?>
-        <tr>
-            <td><?=$commento['contenuto']?></td>
-            <td><?=$commento['username']?></td>
-            <td><?=$commento['data_pubblicazione']?> alle <?=$commento['ora_pubblicazione']?></td>
+        <tr id="replies<?=$commento['commento_id']?>">
+            <td colspan="3">
+                <button
+                    hx-get="commenti.php?commento_id=<?=$commento['commento_id']?>"
+                    hx-target="#replies<?=$commento['commento_id']?>"
+                    hx-swap="outerHTML"> Vedi risposte
+                </button>
+            </td>
         </tr>
         <?php
-        if($commento['num_risposte'] > 0) {
-            ?>
-            <tr id="replies<?=$commento['commento_id']?>">
-                <td colspan="3">
-                    <button
-                        hx-get="commenti.php?commento_id=<?=$commento['commento_id']?>"
-                        hx-target="#replies<?=$commento['commento_id']?>"
-                        hx-swap="outerHTML"> Vedi risposte
-                    </button>
-                </td>
-            </tr>
-            <?php
-        }
     }
 }
 
