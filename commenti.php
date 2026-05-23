@@ -7,10 +7,10 @@ $commento_id = $_REQUEST['commento_id'] ?? null;
 $nPagina = $_REQUEST['nPagina'] ?? 1;
 
 if($commento_id == null){
-    $commenti = getCommentsFromForumId($forum_id, $nPagina, 10);
+    $commenti = getCommentsFromForumId($forum_id, $nPagina, 11);
 }
 else{
-    $commenti = getCommentsFromCommentId($commento_id, $nPagina, 10);
+    $commenti = getCommentsFromCommentId($commento_id, $nPagina, 11);
 }
 
 
