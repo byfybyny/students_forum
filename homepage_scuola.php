@@ -13,44 +13,43 @@ $numStudenti  = getNumStudenti($scuola_id);
 <html lang="it">
 <head>
     <title>Homepage Scuola</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
     <script src="librerie/htmx.min.js"></script>
 </head>
 <body>
-    <h1>Benvenuto, <?= $nome ?>!</h1>
-    <p>Studenti iscritti alla tua scuola: <strong><?= $numStudenti ?></strong></p>
+    <div class="forum-container">
+        <h1>Benvenuto, <?= htmlspecialchars($nome) ?>!</h1>
+        <p>Studenti iscritti alla tua scuola: <strong><?= $numStudenti ?></strong></p>
 
-    <a href="logout.php">Logout</a> |
-    <a href="modifica_profilo_scuola.php">Modifica Profilo</a>
+        <div class="user-actions">
+            <a href="modifica_profilo_scuola.php" class="action-btn">
+                ⚙️ Modifica Profilo
+            </a>
+            <a href="logout.php" class="action-btn logout">
+                ⏻ Logout
+            </a>
+        </div>
 
-    <h2>Forum dei tuoi studenti</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Titolo</th>
-                <th>Username</th>
-                <th>Data di Creazione</th>
-            </tr>
-        </thead>
-        <tbody>
+        <h2>Forum dei tuoi studenti</h2>
+        
+        <div class="forum-list" id="forum-body">
             <?php foreach ($forum as $row): ?>
-            <tr>
-                <td>
-                    <a href="forum.php?forum_id=<?= (int)$row['forum_id'] ?>">
-                        <?= htmlspecialchars($row['titolo']) ?>
-                    </a>
-                </td>
-                <td><?= htmlspecialchars($row['username']) ?></td>
-                <td><?= htmlspecialchars($row['data_pubblicazione']) ?></td>
-            </tr>
+            <a href="forum.php?forum_id=<?= (int)$row['forum_id'] ?>" class="forum-card">
+                <h3><?= htmlspecialchars($row['titolo']) ?></h3>
+                <div class="meta-info">
+                    Creato da <?= htmlspecialchars($row['username']) ?> il <?= htmlspecialchars($row['data_pubblicazione']) ?>
+                </div>
+            </a>
             <?php endforeach; ?>
 
-            <tr id="altri_forum"
-                hx-get="/students_forum/load_more_scuola.php?offset=5&limit=5&scuola_id=<?= $scuola_id ?>"
-                hx-trigger="revealed"
-                hx-target="#altri_forum"
-                hx-swap="outerHTML">
-            </tr>
-        </tbody>
-    </table>
+            <div id="altri_forum"
+                 hx-get="load_more_scuola.php?offset=5&limit=5&scuola_id=<?= $scuola_id ?>"
+                 hx-trigger="revealed"
+                 hx-swap="outerHTML">
+                 <div class="card">Caricamento altri forum...</div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

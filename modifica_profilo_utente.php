@@ -48,45 +48,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="it">
 <head>
     <title>Modifica Profilo</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Modifica Profilo</h1>
-    <a href="homepage_utente.php">Ritorna All'Homepage</a>
-    <br><br>
+    <div class="forum-container">
+        <div class="user-actions">
+            <a href="homepage_utente.php" class="action-btn">← Ritorna all'Homepage</a>
+        </div>
 
-    <form method="post">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" value="<?= htmlspecialchars($utente['username']) ?>">
-    <br>
+        <div class="form-card">
+            <h1>Modifica Profilo</h1>
+            <form method="post">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" value="<?= htmlspecialchars($utente['username']) ?>">
+                </div>
 
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" name="nome" value="<?= htmlspecialchars($utente['nome']) ?>">
-    <br>
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" value="<?= htmlspecialchars($utente['nome']) ?>">
+                </div>
 
-    <label for="cognome">Cognome:</label>
-    <input type="text" id="cognome" name="cognome" value="<?= htmlspecialchars($utente['cognome']) ?>">
-    <br>
+                <div class="form-group">
+                    <label for="cognome">Cognome:</label>
+                    <input type="text" id="cognome" name="cognome" value="<?= htmlspecialchars($utente['cognome']) ?>">
+                </div>
 
-    <label for="password">Nuova Password:</label>
-    <input type="password" id="password" name="password" placeholder="Lascia vuoto per non cambiarla">
-    <br>
+                <div class="form-group">
+                    <label for="password">Nuova Password:</label>
+                    <input type="password" id="password" name="password" placeholder="Lascia vuoto per non cambiarla">
+                </div>
 
-    <label for="bio">Biografia:</label>
-    <textarea id="bio" name="bio"><?= htmlspecialchars($utente['descrizione']) ?></textarea>
-    <br>
+                <div class="form-group">
+                    <label for="bio">Biografia:</label>
+                    <textarea id="bio" name="bio"><?= htmlspecialchars($utente['descrizione']) ?></textarea>
+                </div>
 
+                <div class="form-group">
+                    <label for="scuola">Scuola:</label>
+                    <select id="scuola" name="scuola">
+                        <?php foreach ($scuole as $s): ?>
+                            <option value="<?= $s['scuola_id'] ?>" <?= $utente['scuola_id'] == $s['scuola_id'] ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($s['nome']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
 
-    <label for="scuola">Scuola:</label>
-    <select id="scuola" name="scuola">
-        <?php foreach ($scuole as $s): ?>
-            <option value="<?= $s['scuola_id'] ?>" 
-                <?= $utente['scuola_id'] == $s['scuola_id'] ? 'selected' : '' ?>>
-                <?= htmlspecialchars($s['nome']) ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
-
-    <input type="submit" value="Salva Modifiche">
-</form>
+                <button type="submit" class="submit-btn">Salva Modifiche</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

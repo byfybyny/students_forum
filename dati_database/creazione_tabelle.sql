@@ -45,13 +45,15 @@ CREATE OR REPLACE TABLE forum (
 CREATE OR REPLACE TABLE commenti (
     commento_id INT PRIMARY KEY AUTO_INCREMENT,
     forum_id INT NOT NULL,
-    utente_id INT NOT NULL,
+    utente_id INT NULL,
+    scuola_id INT NULL,
     contenuto TEXT NOT NULL,
     data_pubblicazione TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     commento_id_padre INT,
     FOREIGN KEY (commento_id_padre) REFERENCES commenti(commento_id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (forum_id) REFERENCES forum(forum_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (utente_id) REFERENCES utenti(utente_id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (utente_id) REFERENCES utenti(utente_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (scuola_id) REFERENCES scuole(scuola_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE OR REPLACE TABLE files (

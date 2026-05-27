@@ -207,17 +207,21 @@ function createForum(int $utente_id, string $titolo, string $contenuto){
  */
 function getCommentsFromForumId(int $forum_id, int $nPagina, int $dimensionePagina) {
     global $pdo;
-
     $offset = ($nPagina - 1) * $dimensionePagina;
 
     $sql = <<<SQL
-        select c.commento_id, c.contenuto, date(c.data_pubblicazione) as data_pubblicazione, time(c.data_pubblicazione) as ora_pubblicazione, c.commento_id_padre, u.utente_id, u.username, (select count(*) from commenti as c2 where c2.commento_id_padre = c.commento_id) as num_risposte
-        from commenti as c
-        join utenti as u on c.utente_id = u.utente_id
-        where c.forum_id = :forum_id
-        and c.commento_id_padre is null
-        order by c.data_pubblicazione desc
-        limit :limit offset :offset;
+        SELECT c.commento_id, c.contenuto, DATE(c.data_pubblicazione) as data_pubblicazione, 
+               TIME(c.data_pubblicazione) as ora_pubblicazione, c.commento_id_padre, 
+               c.utente_id, c.scuola_id,
+               COALESCE(u.username, s.nome) as autore,
+               (SELECT COUNT(*) FROM commenti as c2 WHERE c2.commento_id_padre = c.commento_id) as num_risposte
+        FROM commenti as c
+        LEFT JOIN utenti as u ON c.utente_id = u.utente_id
+        LEFT JOIN scuole as s ON c.scuola_id = s.scuola_id
+        WHERE c.forum_id = :forum_id
+        AND c.commento_id_padre IS NULL
+        ORDER BY c.data_pubblicazione DESC
+        LIMIT :limit OFFSET :offset;
     SQL;
 
     $stmt = $pdo->prepare($sql);
@@ -227,7 +231,6 @@ function getCommentsFromForumId(int $forum_id, int $nPagina, int $dimensionePagi
     $stmt->execute();
 
     return $stmt->fetchAll();
-
 }
 
 /*
@@ -239,16 +242,20 @@ function getCommentsFromForumId(int $forum_id, int $nPagina, int $dimensionePagi
  */
 function getCommentsFromCommentId(int $commento_id_padre, int $nPagina, int $dimensionePagina){
     global $pdo;
-
     $offset = ($nPagina - 1) * $dimensionePagina;
 
     $sql = <<<SQL
-        select c.commento_id, c.contenuto, date(c.data_pubblicazione) as data_pubblicazione, time(c.data_pubblicazione) as ora_pubblicazione, c.commento_id_padre, u.utente_id, u.username, (select count(*) from commenti as c2 where c2.commento_id_padre = c.commento_id) as num_risposte
-        from commenti as c
-        join utenti as u on c.utente_id = u.utente_id
-        where c.commento_id_padre = :commento_id_padre
-        order by c.data_pubblicazione desc
-        limit :limit offset :offset;
+        SELECT c.commento_id, c.contenuto, DATE(c.data_pubblicazione) as data_pubblicazione, 
+               TIME(c.data_pubblicazione) as ora_pubblicazione, c.commento_id_padre, 
+               c.utente_id, c.scuola_id,
+               COALESCE(u.username, s.nome) as autore,
+               (SELECT COUNT(*) FROM commenti as c2 WHERE c2.commento_id_padre = c.commento_id) as num_risposte
+        FROM commenti as c
+        LEFT JOIN utenti as u ON c.utente_id = u.utente_id
+        LEFT JOIN scuole as s ON c.scuola_id = s.scuola_id
+        WHERE c.commento_id_padre = :commento_id_padre
+        ORDER BY c.data_pubblicazione DESC
+        LIMIT :limit OFFSET :offset;
     SQL;
 
     $stmt = $pdo->prepare($sql);
@@ -343,22 +350,21 @@ function getNumStudenti(int $scuola_id): int {
     return (int)$stmt->fetchColumn();
 }
 
-function createCommento(int $utente_id, int $forum_id, ?int $commento_id_padre, string $contenuto): bool {
+function createCommento(?int $utente_id, ?int $scuola_id, int $forum_id, ?int $commento_id_padre, string $contenuto): bool {
     global $pdo;
 
     $sql = <<<SQL
-        insert into commenti (utente_id, forum_id, commento_id_padre, contenuto, data_pubblicazione)
-        values (:utente_id, :forum_id, :commento_id_padre, :contenuto, CURRENT_TIMESTAMP());
+        INSERT INTO commenti (utente_id, scuola_id, forum_id, commento_id_padre, contenuto, data_pubblicazione)
+        VALUES (:utente_id, :scuola_id, :forum_id, :commento_id_padre, :contenuto, CURRENT_TIMESTAMP());
     SQL;
 
     $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':utente_id', $utente_id, PDO::PARAM_INT);
+
+    // Bind dinamico: se l'ID è null, il database riceverà SQL NULL
+    $stmt->bindValue(':utente_id', $utente_id, $utente_id !== null ? PDO::PARAM_INT : PDO::PARAM_NULL);
+    $stmt->bindValue(':scuola_id', $scuola_id, $scuola_id !== null ? PDO::PARAM_INT : PDO::PARAM_NULL);
     $stmt->bindValue(':forum_id', $forum_id, PDO::PARAM_INT);
-    if ($commento_id_padre === null) {
-        $stmt->bindValue(':commento_id_padre', null, PDO::PARAM_NULL);
-    } else {
-        $stmt->bindValue(':commento_id_padre', $commento_id_padre, PDO::PARAM_INT);
-    }
+    $stmt->bindValue(':commento_id_padre', $commento_id_padre, $commento_id_padre !== null ? PDO::PARAM_INT : PDO::PARAM_NULL);
     $stmt->bindValue(':contenuto', $contenuto, PDO::PARAM_STR);
 
     return $stmt->execute();

@@ -38,23 +38,39 @@ if (($_POST['btnAction'] ?? '') === 'login') {
     }
 }
 ?>
-<Doctype html>
+<!DOCTYPE html>
 <html lang="it">      
-    <head>
-        <title>Login</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Forum Studenti</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Stile aggiuntivo specifico per la pagina di login */
+        body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .login-card { width: 100%; max-width: 400px; }
+        .error-msg { background: #fdf2f2; color: #e74c3c; padding: 10px; border-radius: 4px; margin-bottom: 15px; font-size: 0.9em; }
+    </style>
+</head>
 
-    <body>
+<body>
+    <div class="login-card card">
         <h1>Login</h1>
-        <?php if (isset($errore)) { echo "<p style='color:red;'>$errore</p>"; } ?>
-        <form method="post">
-            <input type="email" name="email" placeholder="Email" required><br>
-            <input type="password" name="password" placeholder="Password" required><br>
-            <button type="submit" name="btnAction" value="login">Accedi</button>
+        <?php if ($errore): ?>
+            <div class="error-msg"><?= htmlspecialchars($errore) ?></div>
+        <?php endif; ?>
+
+        <form method="post" class="form-group">
+            <input type="email" name="email" placeholder="Email" required style="width: 100%; margin-bottom: 10px; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px;">
+            <input type="password" name="password" placeholder="Password" required style="width: 100%; margin-bottom: 15px; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px;">
+            <button type="submit" name="btnAction" value="login" class="submit-btn" style="width: 100%;">Accedi</button>
         </form> 
-        <br>
-        <a href="registrazione_utente.php">Registrati come studente</a>
-        <br>
-        <a href="registrazione_scuola.php">Registrati come scuola</a>
-    </body>
+        
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--border-color);">
+        
+        <div class="auth-links">
+            <a href="registrazione_utente.php">Studente</a>
+            <a href="registrazione_scuola.php">Scuola</a>
+        </div>
+    </div>
+</body>
 </html>

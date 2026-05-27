@@ -25,43 +25,32 @@ $files = getFilesByForumId($forum_id);
 
 ?>
 
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="it">
-    <head></head></head>
-        <title>Forum: <?=$forum['titolo']?></title>
-        <script src="librerie/htmx.min.js"></script>
-    </head>
+<head>
+    <title>Forum: <?=$forum['titolo']?></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <script src="librerie/htmx.min.js"></script>
+</head>
+<body>
+    <a href="login.php" class="back-link">← Torna indietro</a>
+    
+    <div class="forum-container">
+        <div class="card forum-header">
+            <h1><?=$forum['titolo']?></h1>
+            <p>Creato da <strong><?=$forum['username']?></strong> il <?=$forum['data_pubblicazione']?></p>
+            <p><?=$forum['contenuto']?></p>
+        </div>
 
-    <body>
-        <h1><?=$forum['titolo']?></h1>
-        <h3>creato da <?=$forum['username']?> il <?=$forum['data_pubblicazione']?> alle <?=$forum['ora_pubblicazione']?></h3>
-        <p><?=$forum['contenuto']?></p>
+        <button id="aggiungi_commento" hx-get="pagina_aggiunta_commento.php?forum_id=<?=$forum_id?>" hx-target="#aggiungi_commento">
+            + Aggiungi commento
+        </button>
 
-        <button id="aggiungi_commento"
-                hx-get="pagina_aggiunta_commento.php?forum_id=<?=$forum_id?>"
-                hx-target="#aggiungi_commento"
-                hx-trigger="click"
-                hx-swap="outerHTML">
-                aggiungi commento</button>
-
-        <table>
-            <tr>
-                <th>contenuto</th>
-                <th>crato da</th>
-                <th>creato il</th>
-            </tr>
-            <tr id=commenti>
-                <td colspan="3">
-                    <div
-                        hx-get="commenti.php?forum_id=<?=$forum_id?>"
-                        hx-target="#commenti"
-                        hx-trigger="revealed"
-                        hx-swap="outerHTML">
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </body>
+        <h2>Commenti</h2>
+        <div id="commenti" class="comment-list" hx-get="commenti.php?forum_id=<?=$forum_id?>" hx-trigger="revealed">
+            <div class="card">Caricamento...</div>
+        </div>
+    </div>
+</body>
 </html>
-
-

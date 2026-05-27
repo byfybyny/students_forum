@@ -14,43 +14,39 @@ $forum = getLast5Forum(0, 5);
 <html lang="it">
 <head>
     <title>Homepage Utente</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
     <script src="librerie/htmx.min.js"></script>
 </head>
 <body>
-    <h1>Benvenuto, <?php echo $nome; ?>!</h1>
-    <p>Questa è la homepage del tuo profilo.</p>
+    <div class="forum-container">
+        <h1>Benvenuto, <?php echo $nome; ?>!</h1>
+        <div class="user-actions">
+            <a href="modifica_profilo_utente.php" class="action-btn">
+                ⚙️ Modifica Profilo
+            </a>
+            <a href="logout.php" class="action-btn logout">
+                ⏻ Logout
+            </a>
+        </div>
 
-    <a href="logout.php">Logout</a> |
-    <a href="modifica_profilo_utente.php">Modifica Profilo</a>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Titolo</th>
-                <th>Username</th>
-                <th>Data di Creazione</th>
-            </tr>
-        </thead>
-        <tbody id="forum-body">
+        <div class="forum-list" id="forum-body">
             <?php foreach ($forum as $row): ?>
-            <tr>
-                <td>
-                    <a href="forum.php?forum_id=<?= (int)$row['forum_id'] ?>">
-                        <?= $row['titolo']?>
-                    </a>
-                </td>
-                <td><?= $row['username']?></td>
-                <td><?= $row['data_pubblicazione']?></td>
-            </tr>
+            <a href="forum.php?forum_id=<?= (int)$row['forum_id'] ?>" class="forum-card">
+                <h3><?= $row['titolo']?></h3>
+                <div class="meta-info">
+                    Creato da <?= $row['username']?> il <?= $row['data_pubblicazione']?>
+                </div>
+            </a>
             <?php endforeach; ?>
 
-            <tr id="altri_forum"
-                hx-get="/students_forum/load_new_forum.php?offset=5&limit=5"
-                hx-trigger="revealed"
-                hx-target="#altri_forum"
-                hx-swap="outerHTML">
-            </tr>
-        </tbody>
-    </table>
+            <div id="altri_forum"
+                 hx-get="load_new_forum.php?offset=5&limit=5"
+                 hx-trigger="revealed"
+                 hx-swap="outerHTML">
+                 <div class="card">Caricamento altri forum...</div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

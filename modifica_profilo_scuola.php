@@ -48,42 +48,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="it">
 <head>
     <title>Modifica Profilo Scuola</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Modifica Profilo Scuola</h1>
-    <a href="homepage_scuola.php">Ritorna All'Homepage</a>
-    <br><br>
+    <div class="forum-container">
+        <h1>Modifica Profilo Scuola</h1>
+        <a href="homepage_scuola.php">← Ritorna all'homepage</a>
 
-    <form method="post">
-        <label for="nome">Nome Scuola:</label>
-        <input type="text" id="nome" name="nome" value="<?= htmlspecialchars($scuola['nome']) ?>">
-        <br>
+        <div class="form-card">
+            <form method="post">
+                <div class="form-group">
+                    <label for="nome">Nome Scuola:</label>
+                    <input type="text" id="nome" name="nome" value="<?= htmlspecialchars($scuola['nome']) ?>" required>
+                </div>
 
-        <label for="indirizzo">Indirizzo:</label>
-        <input type="text" id="indirizzo" name="indirizzo" value="<?= htmlspecialchars($scuola['indirizzo']) ?>">
-        <br>
+                <div class="form-group">
+                    <label for="indirizzo">Indirizzo:</label>
+                    <input type="text" id="indirizzo" name="indirizzo" value="<?= htmlspecialchars($scuola['indirizzo']) ?>" required>
+                </div>
 
-        <label for="citta">Città:</label>
-        <input type="text" id="citta" name="citta" value="<?= htmlspecialchars($scuola['citta']) ?>">
-        <br>
+                <div class="form-group">
+                    <label for="citta">Città:</label>
+                    <input type="text" id="citta" name="citta" value="<?= htmlspecialchars($scuola['citta']) ?>" required>
+                </div>
 
-        <label for="provincia">Provincia:</label>
-        <input type="text" id="provincia" name="provincia" value="<?= htmlspecialchars($scuola['provincia']) ?>">
-        <br>
+                <div class="form-group">
+                    <label for="provincia">Provincia:</label>
+                    <input type="text" id="provincia" name="provincia" value="<?= htmlspecialchars($scuola['provincia']) ?>" required>
+                </div>
 
-        <label for="cap">CAP:</label>
-        <input type="text" id="cap" name="cap" value="<?= htmlspecialchars($scuola['cap']) ?>">
-        <br>
+                <div class="form-group">
+                    <label for="cap">CAP:</label>
+                    <input type="text" id="cap" name="cap" value="<?= htmlspecialchars($scuola['cap']) ?>" required>
+                </div>
 
-        <label for="telefono">Telefono:</label>
-        <input type="text" id="telefono" name="telefono" value="<?= htmlspecialchars($scuola['telefono']) ?>">
-        <br>
+                <div class="form-group">
+                    <label for="telefono">Telefono:</label>
+                    <input type="text" id="telefono" name="telefono" value="<?= htmlspecialchars($scuola['telefono']) ?>" required>
+                </div>
 
-        <label for="password">Nuova Password:</label>
-        <input type="password" id="password" name="password" placeholder="Lascia vuoto per non cambiarla">
-        <br>
+                <div class="form-group">
+                    <label for="password">Nuova Password:</label>
+                    <input type="password" id="password" name="password" placeholder="Lascia vuoto per non cambiarla">
+                </div>
 
-        <input type="submit" value="Salva Modifiche">
-    </form>
+                <button type="submit" class="submit-btn">Salva Modifiche</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

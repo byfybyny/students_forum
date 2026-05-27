@@ -1,10 +1,9 @@
 <?php
-
 require_once "function.php";
 
-$forum_id = $_REQUEST['forum_id'] ?? null;
-$commento_id = $_REQUEST['commento_id'] ?? null;
-$nPagina = $_REQUEST['nPagina'] ?? 1;
+$forum_id = isset($_REQUEST['forum_id']) ? (int)$_REQUEST['forum_id'] : null;
+$commento_id = isset($_REQUEST['commento_id']) ? (int)$_REQUEST['commento_id'] : null;
+$nPagina = isset($_REQUEST['nPagina']) ? (int)$_REQUEST['nPagina'] : 1;
 
 if($commento_id == null){
     $commenti = getCommentsFromForumId($forum_id, $nPagina, 11);
@@ -15,7 +14,6 @@ else{
 
 $commenti = $commenti ?? [];
 
-
 // controllo se è l'ultima pagina
 $isLastPage = false;
 if(count($commenti) !== 11){
@@ -25,39 +23,27 @@ if(count($commenti) !== 11){
 }
 
 foreach($commenti as $commento) {
-    ?>
-    <tr>
-        <td><?=$commento['contenuto']?></td>
-        <td><?=$commento['username']?></td>
-        <td><?=$commento['data_pubblicazione']?> alle <?=$commento['ora_pubblicazione']?></td>
-    </tr>
-    <?php
-    if($commento['num_risposte'] > 0) {
-        ?>
-        <tr id="replies<?=$commento['commento_id']?>">
-            <td colspan="3">
-                <button
-                    hx-get="commenti.php?commento_id=<?=$commento['commento_id']?>"
-                    hx-target="#replies<?=$commento['commento_id']?>"
-                    hx-swap="outerHTML"> Vedi risposte
-                </button>
-            </td>
-        </tr>
-        <?php
-    }
+    // Determiniamo se è una scuola per aggiungere una classe CSS specifica (opzionale)
+    $tipoClasse = !empty($commento['scuola_id']) ? 'scuola-post' : 'utente-post';
+    
+    echo "
+    <div class='card comment {$tipoClasse}'>
+        <div class='comment-meta'>
+            <strong>" . htmlspecialchars($commento['autore']) . "</strong> 
+            " . (!empty($commento['scuola_id']) ? " <small>(Scuola)</small>" : "") . " 
+            • {$commento['data_pubblicazione']}
+        </div>
+        <p>" . nl2br(htmlspecialchars($commento['contenuto'])) . "</p>
+        <div id='replies{$commento['commento_id']}'>
+            " . ($commento['num_risposte'] > 0 ? "
+            <button hx-get='commenti.php?commento_id={$commento['commento_id']}' hx-target='#replies{$commento['commento_id']}'>
+                Vedi {$commento['num_risposte']} risposte
+            </button>" : "") . "
+        </div>
+    </div>";
 }
 
 if(!$isLastPage) {
-?>
-<tr id="more<?=$forum_id?><?=$commento_id?>">
-    <td colspan="3">
-        <button
-            hx-get="commenti.php?forum_id=<?=$forum_id?>&commento_id=<?=$commento_id?>&nPagina=<?=($nPagina + 1)?>"
-            hx-target="#more<?=$forum_id?><?=$commento_id?>"
-            hx-swap="outerHTML"> Vedi di più
-        </button>
-    </td>
-</tr>
-<?php
+    echo "<button hx-get='commenti.php?forum_id={$forum_id}&nPagina=".($nPagina + 1)."' hx-swap='outerHTML'>Vedi altro</button>";
 }
 ?>
