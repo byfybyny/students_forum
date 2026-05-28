@@ -240,3 +240,36 @@ button:hover {
     background: #dee2e6;
     color: #000;
 }
+
+/* Alert messaggi */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.alert.success {
+    background: #e6ffed;
+    border-color: #2ecc71;
+    color: #155724;
+}
+
+.alert.error {
+    background: #ffe6e6;
+    border-color: #e74c3c;
+    color: #a22a1a;
+}
+
+.delete-link {
+    margin-left: 10px;
+    font-size: 0.8em;
+    color: #e74c3c; /* Rosso tipico per azioni pericolose */
+    text-decoration: none;
+    opacity: 0.7;
+}
+
+.delete-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+}

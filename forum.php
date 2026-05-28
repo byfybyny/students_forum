@@ -23,9 +23,12 @@ if ($forum_id === null || $forum === false) {
 //dati del file
 $files = getFilesByForumId($forum_id);
 
+// dati relativi alla cancellazione di un commento
+$eliminato = $_REQUEST['eliminato'] ?? null;
+
 ?>
 
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
     <title>Forum: <?=$forum['titolo']?></title>
@@ -36,6 +39,12 @@ $files = getFilesByForumId($forum_id);
 <body>
     <a href="login.php" class="back-link">← Torna indietro</a>
     
+    <?php if ($eliminato !== null): ?>
+        <div class="alert <?= $eliminato == 'true' ? 'success' : 'error' ?>">
+            <?= $eliminato === 'true' ? 'Commento eliminato con successo.' : 'Errore durante l\'eliminazione del commento.' ?>
+        </div>
+    <?php endif; ?>
+
     <div class="forum-container">
         <div class="card forum-header">
             <h1><?=$forum['titolo']?></h1>

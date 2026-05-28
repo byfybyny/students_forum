@@ -5,6 +5,8 @@ session_start();
 
 // accesso negato se l'utennte non è registrato, lo mando a registrarsi
 $email = $_SESSION['email'] ?? null;
+$utente_id = $_SESSION['utente_id'] ?? null;
+$scuola_id = $_SESSION['scuola_id'] ?? null;
 
 if ($email === null) {
     header('Location: login.php');
@@ -38,7 +40,15 @@ if(count($commenti) !== 11){
 }
 
 foreach($commenti as $commento) {
-    // Determiniamo se è una scuola per aggiungere una classe CSS specifica (opzionale)
+    // 1. Controllo di proprietà
+    $puoEliminare = false;
+    
+    // Verifica se l'utente loggato è l'autore del commento (o la scuola corrispondente)
+    if (($utente_id !== null && $commento['utente_id'] == $utente_id) || 
+        ($scuola_id !== null && $commento['scuola_id'] == $scuola_id)) {
+        $puoEliminare = true;
+    }
+
     $tipoClasse = !empty($commento['scuola_id']) ? 'scuola-post' : 'utente-post';
     
     echo "
@@ -47,15 +57,14 @@ foreach($commenti as $commento) {
             <strong>" . htmlspecialchars($commento['autore']) . "</strong> 
             " . (!empty($commento['scuola_id']) ? " <small>(Scuola)</small>" : "") . " 
             • {$commento['data_pubblicazione']}
+            
+            " . ($puoEliminare ? "
+            <a href='elimina_commento.php?commento_id={$commento['commento_id']}&forum_id={$forum_id}' 
+               class='delete-link' 
+               onclick='return confirm(\"Sei sicuro di voler eliminare?\")'>Elimina</a>" : "") . "
         </div>
         <p>" . nl2br(htmlspecialchars($commento['contenuto'])) . "</p>
-        <div id='replies{$commento['commento_id']}'>
-            " . ($commento['num_risposte'] > 0 ? "
-            <button hx-get='commenti.php?commento_id={$commento['commento_id']}' hx-target='#replies{$commento['commento_id']}'>
-                Vedi {$commento['num_risposte']} risposte
-            </button>" : "") . "
-        </div>
-    </div>";
+        </div>";
 }
 
 if(!$isLastPage) {

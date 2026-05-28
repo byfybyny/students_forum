@@ -369,3 +369,20 @@ function createCommento(?int $utente_id, ?int $scuola_id, int $forum_id, ?int $c
 
     return $stmt->execute();
 }
+
+function deleteCommento(int $commento_id, int $id, string $tipo): bool {
+    global $pdo;
+    
+    // Controlliamo in base al tipo (utente o scuola)
+    $colonna = ($tipo === 'scuola') ? 'scuola_id' : 'utente_id';
+
+    $sql = "DELETE FROM commenti WHERE commento_id = :commento_id AND $colonna = :id";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':commento_id', $commento_id, PDO::PARAM_INT);
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+    $stmt->execute();
+
+    return $stmt->rowCount() > 0;
+}
