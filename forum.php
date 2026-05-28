@@ -6,6 +6,7 @@ require_once "function.php";
 session_start();
 $email = $_SESSION['email'] ?? null;
 
+// accesso negato se l'utente non è registrato, lo mando a registrarsi
 if($email === null) {
     header('Location: login.php');
     exit;
@@ -16,8 +17,7 @@ $forum_id = $_REQUEST['forum_id'] ?? null;
 $forum = getForumByForumId($forum_id);
 
 if ($forum_id === null || $forum === false) {
-    header('Location: login.php');
-    exit;
+    die("Forum non trovato");
 }
 
 //dati del file

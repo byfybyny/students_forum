@@ -4,11 +4,6 @@ require_once "function.php";
 
 session_start();
 
-// dati della richiesta
-$contenuto = $_REQUEST['contenuto'] ?? null;
-$forum_id = $_REQUEST['forum_id'] ?? null;
-$commento_padre = $_REQUEST['commento_padre'] ?? null;
-
 // dati dell'utente
 $utente_id = $_SESSION['utente_id'] ?? null;
 $scuola_id = $_SESSION['scuola_id'] ?? null;
@@ -18,7 +13,13 @@ if($scuola_id === null && $utente_id === null) {
     header('Location: login.php');
     exit;
 }
-else if($forum_id === null || $contenuto === null){
+
+// dati della richiesta
+$contenuto = $_REQUEST['contenuto'] ?? null;
+$forum_id = $_REQUEST['forum_id'] ?? null;
+$commento_padre = $_REQUEST['commento_padre'] ?? null;
+
+if($forum_id === null || $contenuto === null){
     die("Parametri mancanti");
 }
 

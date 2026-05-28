@@ -5,6 +5,7 @@ session_start();
 
 // accesso negato se l'utennte non è registrato, lo mando a registrarsi
 $email = $_SESSION['email'] ?? null;
+
 if ($email === null) {
     header('Location: login.php');
     exit;
