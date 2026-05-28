@@ -56,7 +56,7 @@ foreach($commenti as $commento) {
         <input type='hidden' name='commento_id' value='{$commento['commento_id']}'>
         <input type='hidden' name='forum_id' value='{$forum_id}'>
         
-        <button type='submit' class='delete-link' style='border:none; background:none; cursor:pointer;'>
+        <button type='submit' class='delete-link'>
             Elimina
         </button>
     </form>" : "";

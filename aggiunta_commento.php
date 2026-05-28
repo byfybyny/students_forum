@@ -30,33 +30,53 @@ if(createCommento($utente_id, $scuola_id, $forum_id, $commento_padre, $contenuto
     $isAutore = ($utente_id !== null && $commento['utente_id'] == $utente_id) || 
                 ($scuola_id !== null && $commento['scuola_id'] == $scuola_id);
 
+    $id_container = ($commento_padre !== null) ? $commento_padre : 'pagina_aggiungi_commento';
+    $targetLista = ($commento_padre !== null) ? "#replies{$commento_padre}" : "#lista_commenti";
+
     $pulsanteElimina = $isAutore ? "
-        <form hx-post='elimina_commento.php' hx-target='closest .card' hx-swap='outerHTML transition:true' style='display:inline;'>
-            <input type='hidden' name='commento_id' value='{$commento['commento_id']}'>
-            <input type='hidden' name='forum_id' value='{$forum_id}'>
-            <button type='submit' class='delete-link' onclick='return confirm(\"Eliminare?\")'>Elimina</button>
-        </form>" : "";
+    <form hx-post='elimina_commento.php' 
+        hx-target='closest .comment' 
+        hx-swap='outerHTML transition:true'
+        hx-confirm='Sei sicuro di voler eliminare?'
+        style='display:inline;'>
+        
+        <input type='hidden' name='commento_id' value='{$commento['commento_id']}'>
+        <input type='hidden' name='forum_id' value='{$forum_id}'>
+        
+        <button type='submit' class='delete-link'>
+            Elimina
+        </button>
+    </form>" : "";
 
     $pulsanteRispondi = "
-        <div id='risposta_container_{$commento['commento_id']}'>
+    <div id='risposta_container_{$commento['commento_id']}'>
             <button hx-get='pagina_aggiunta_commento.php?forum_id={$forum_id}&commento_padre={$commento['commento_id']}' 
                     hx-target='#risposta_container_{$commento['commento_id']}'
-                    hx-swap='outerHTML'>Rispondi</button>
+                    hx-swap='outerHTML'>
+                Rispondi
+            </button>
         </div>";
 
-    // Stampa del blocco HTML completo
-    echo "
-    <div class='card comment {$tipoClasse} new-comment'>
-        <div class='comment-meta'>
-            <strong>" . htmlspecialchars($commento['autore']) . "</strong> 
-            " . (!empty($commento['scuola_id']) ? " <small>(Scuola)</small>" : "") . " 
-            • Ora
-            {$pulsanteElimina}
+    echo "<div hx-swap-oob='beforeend:{$targetLista}'>
+        <div class='card comment {$tipoClasse} new-comment'>
+            <div class='comment-meta'>
+                <strong>" . htmlspecialchars($commento['autore']) . "</strong> 
+                " . (!empty($commento['scuola_id']) ? " <small>(Scuola)</small>" : "") . " 
+                • {$commento['data_pubblicazione']}
+                {$pulsanteElimina}
+            </div>
+            <p>" . nl2br(htmlspecialchars($commento['contenuto'])) . "</p>
+            <div class='comment-actions'>
+                {$pulsanteRispondi}
+                <div id='replies{$commento['commento_id']}'></div>
+            </div>
         </div>
-        <p>" . nl2br(htmlspecialchars($commento['contenuto'])) . "</p>
-        <div class='comment-actions'>
-            {$pulsanteRispondi}
-            <div id='replies{$commento['commento_id']}'></div>
-        </div>
-    </div>";
+      </div>";
+
+    // 2. IL BOTTONE DI RIPRISTINO (sostituisce il form)
+    echo "<div id='risposta_container_{$id_container}'>
+            <button hx-get='pagina_aggiunta_commento.php?forum_id={$forum_id}&commento_padre=" . ($commento_padre ?? '') . "' 
+                    hx-target='#risposta_container_{$id_container}'
+                    hx-swap='outerHTML'>Rispondi</button>
+          </div>";
 }
