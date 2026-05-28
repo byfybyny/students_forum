@@ -4,9 +4,12 @@ require_once "function.php";
 
 session_start();
 
-$utente_id = $_SESSION['utente_id'] ?? null;
+// dati della richiesta
 $titolo = $_REQUEST['titolo'] ?? null;
 $contenuto = $_REQUEST['contenuto'] ?? null;
+
+// dati dell'utente
+$utente_id = $_SESSION['utente_id'] ?? null;
 
 if($utente_id === null) {
     header('Location: login.php');
