@@ -3,10 +3,11 @@ require_once "function.php";
 
 session_start();
 
-// accesso negato se l'utennte non è registrato
+// accesso negato se l'utennte non è registrato, lo mando a registrarsi
 $email = $_SESSION['email'] ?? null;
 if ($email === null) {
-    die("Accesso negato");
+    header('Location: login.php');
+    exit;
 }
 
 // dati relativi a forum o commento
