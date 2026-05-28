@@ -1,6 +1,8 @@
 <?php
 require_once "function.php";
 
+session_start();
+
 // accesso negato se l'utennte non è registrato
 $email = $_SESSION['email'] ?? null;
 if ($email === null) {
