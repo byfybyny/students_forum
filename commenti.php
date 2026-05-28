@@ -45,22 +45,6 @@ foreach($commenti as $commento) {
     $isAutore = ($utente_id !== null && $commento['utente_id'] == $utente_id) || 
                 ($scuola_id !== null && $commento['scuola_id'] == $scuola_id);
     
-    /*
-    echo "
-    <div class='card comment {$tipoClasse}'>
-        <div class='comment-meta'>
-            <strong>" . htmlspecialchars($commento['autore']) . "</strong> 
-            " . (!empty($commento['scuola_id']) ? " <small>(Scuola)</small>" : "") . " 
-            • {$commento['data_pubblicazione']}
-            
-            " . ($puoEliminare ? "
-            <a href='elimina_commento.php?commento_id={$commento['commento_id']}&forum_id={$forum_id}' 
-               class='delete-link' 
-               onclick='return confirm(\"Sei sicuro di voler eliminare?\")'>Elimina</a>" : "") . "
-        </div>
-        <p>" . nl2br(htmlspecialchars($commento['contenuto'])) . "</p>
-        </div>";
-    */
     // Preparazione delle stringhe dinamiche
     $pulsanteElimina = $isAutore ? "
     <form hx-post='elimina_commento.php' 
