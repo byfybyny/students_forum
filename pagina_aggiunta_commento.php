@@ -2,10 +2,10 @@
     $forum_id = $_REQUEST['forum_id'] ?? null;
     $commento_padre = $_REQUEST['commento_padre'] ?? null;
 ?>
-<form action="aggiunta_commento.php?forum_id=<?=$forum_id?>&commento_padre=<?=$commento_padre?>" 
-      method="post" 
-      id="aggiungi_commento<?=$commento_padre?>"
-      class="comment-form-wrapper">
+<form action="aggiunta_commento.php" method="post" id="aggiungi_commento<?=$commento_padre?>" class="comment-form-wrapper">
+    
+    <input type="hidden" name="forum_id" value="<?=$forum_id?>">
+    <input type="hidden" name="commento_padre" value="<?=$commento_padre?>">
     
     <textarea name="contenuto" placeholder="Cosa ne pensi?" required></textarea>
     

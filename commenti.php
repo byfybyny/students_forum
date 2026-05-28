@@ -40,17 +40,12 @@ if(count($commenti) !== 11){
 }
 
 foreach($commenti as $commento) {
-    // 1. Controllo di proprietà
-    $puoEliminare = false;
-    
-    // Verifica se l'utente loggato è l'autore del commento (o la scuola corrispondente)
-    if (($utente_id !== null && $commento['utente_id'] == $utente_id) || 
-        ($scuola_id !== null && $commento['scuola_id'] == $scuola_id)) {
-        $puoEliminare = true;
-    }
-
+    // Controllo dei permessi
     $tipoClasse = !empty($commento['scuola_id']) ? 'scuola-post' : 'utente-post';
+    $isAutore = ($utente_id !== null && $commento['utente_id'] == $utente_id) || 
+                ($scuola_id !== null && $commento['scuola_id'] == $scuola_id);
     
+    /*
     echo "
     <div class='card comment {$tipoClasse}'>
         <div class='comment-meta'>
@@ -65,6 +60,44 @@ foreach($commenti as $commento) {
         </div>
         <p>" . nl2br(htmlspecialchars($commento['contenuto'])) . "</p>
         </div>";
+    */
+    // Preparazione delle stringhe dinamiche
+    $pulsanteElimina = $isAutore ? "
+        <form action='elimina_commento.php' method='POST' style='display:inline;'>
+            <input type='hidden' name='commento_id' value='{$commento['commento_id']}'>
+            <input type='hidden' name='forum_id' value='{$forum_id}'>
+            <button type='submit' class='delete-link' onclick='return confirm(\"Eliminare?\")'>Elimina</button>
+        </form>" : "";
+
+    $pulsanteRispondi = "
+        <div id='risposta_container_{$commento['commento_id']}'>
+            <button hx-get='pagina_aggiunta_commento.php?forum_id={$forum_id}&commento_padre={$commento['commento_id']}' 
+                    hx-target='#risposta_container_{$commento['commento_id']}'
+                    hx-swap='outerHTML'>Rispondi</button>
+        </div>";
+
+    $pulsanteVediRisposte = ($commento['num_risposte'] > 0) ? "
+        <div id='replies{$commento['commento_id']}'>
+            <button hx-get='commenti.php?commento_id={$commento['commento_id']}' 
+                    hx-target='#replies{$commento['commento_id']}'>Vedi {$commento['num_risposte']} risposte</button>
+        </div>" : "";
+
+    // Stampa finale
+    echo "
+    <div class='card comment {$tipoClasse}'>
+        <div class='comment-meta'>
+            <strong>" . htmlspecialchars($commento['autore']) . "</strong> 
+            " . (!empty($commento['scuola_id']) ? " <small>(Scuola)</small>" : "") . " 
+            • {$commento['data_pubblicazione']}
+            {$pulsanteElimina}
+        </div>
+        <p>" . nl2br(htmlspecialchars($commento['contenuto'])) . "</p>
+        
+        <div class='comment-actions'>
+            {$pulsanteRispondi}
+            {$pulsanteVediRisposte}
+        </div>
+    </div>";
 }
 
 if(!$isLastPage) {

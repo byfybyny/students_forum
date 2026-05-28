@@ -386,3 +386,13 @@ function deleteCommento(int $commento_id, int $id, string $tipo): bool {
 
     return $stmt->rowCount() > 0;
 }
+
+function getForumIdFromCommentoId(int $commento_id): int {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT forum_id FROM commenti WHERE commento_id = ?");
+    $stmt->execute([$commento_id]);
+    $result = $stmt->fetchColumn();
+    
+    // Se non trova nulla, ritorna 0 per far scattare l'errore sopra
+    return $result ? (int)$result : 0;
+}

@@ -20,6 +20,9 @@ $commento_id = $_REQUEST['commento_id'] ?? null;
 if($commento_id === null || $forum_id === null){
     die('Commento non valido');
 }
+if (empty($forum_id)) {
+    $forum_id = getForumIdFromCommentoId($commento_id); 
+}
 
 $is_eliminato = false;
 if($scuola_id !== null){
