@@ -65,16 +65,20 @@ foreach($commenti as $commento) {
         <div id='risposta_container_{$commento['commento_id']}'>
             <button hx-get='pagina_aggiunta_commento.php?forum_id={$forum_id}&commento_padre={$commento['commento_id']}' 
                     hx-target='#risposta_container_{$commento['commento_id']}'
-                    hx-swap='outerHTML'>Rispondi</button>
+                    hx-swap='outerHTML'>
+                Rispondi
+            </button>
         </div>";
 
-    $pulsanteVediRisposte = ($commento['num_risposte'] > 0) ? "
+    $pulsanteVediRisposte = "
         <div id='replies{$commento['commento_id']}'>
+            " . ($commento['num_risposte'] > 0 ? "
             <button hx-get='commenti.php?commento_id={$commento['commento_id']}' 
-                    hx-target='#replies{$commento['commento_id']}'>Vedi {$commento['num_risposte']} risposte</button>
-        </div>" : "";
+                    hx-target='#replies{$commento['commento_id']}'>
+                Vedi {$commento['num_risposte']} risposte
+            </button>" : "") . "
+        </div>";
 
-    // Stampa finale
     echo "
     <div class='card comment {$tipoClasse}'>
         <div class='comment-meta'>
