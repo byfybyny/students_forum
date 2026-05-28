@@ -24,7 +24,7 @@ if($forum_id === null || $contenuto === null){
 }
 
 // Se il commento padre è una stringa "null", allora lo converto in null
-if($commento_padre == "null"){
+if($commento_padre == "null" || $commento_padre === ''){
     $commento_padre = null;
 }
 
