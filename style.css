@@ -196,3 +196,47 @@ button:hover {
     background-color: var(--primary-color);
     color: white;
 }
+
+/* Stile per il Form Commenti */
+.comment-form-wrapper {
+    margin: 15px 0;
+    padding: 15px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.comment-form-wrapper textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    box-sizing: border-box; /* Fondamentale */
+    font-family: inherit;
+    resize: vertical;
+    margin-bottom: 10px;
+    outline: none;
+}
+
+.comment-form-wrapper textarea:focus {
+    border-color: var(--primary);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-secondary {
+    background: #e9ecef;
+    border: none;
+    color: #495057;
+}
+
+.btn-secondary:hover {
+    background: #dee2e6;
+    color: #000;
+}

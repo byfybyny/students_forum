@@ -43,7 +43,10 @@ $files = getFilesByForumId($forum_id);
             <p><?=$forum['contenuto']?></p>
         </div>
 
-        <button id="aggiungi_commento" hx-get="pagina_aggiunta_commento.php?forum_id=<?=$forum_id?>" hx-target="#aggiungi_commento">
+        <button id="pagina_aggiungi_commento"
+                hx-get="pagina_aggiunta_commento.php?forum_id=<?=$forum_id?>"
+                hx-target="#pagina_aggiungi_commento"
+                hx-swap="outerHTML">
             + Aggiungi commento
         </button>
 
