@@ -396,3 +396,23 @@ function getForumIdFromCommentoId(int $commento_id): int {
     // Se non trova nulla, ritorna 0 per far scattare l'errore sopra
     return $result ? (int)$result : 0;
 }
+
+function getCommentoById(int $commento_id): array|false {
+    global $pdo;
+    
+    $sql = <<<SQL
+        SELECT c.commento_id, c.contenuto, DATE(c.data_pubblicazione) as data_pubblicazione, 
+               TIME(c.data_pubblicazione) as ora_pubblicazione, c.commento_id_padre, 
+               c.utente_id, c.scuola_id,
+               COALESCE(u.username, s.nome) as autore,
+               (SELECT COUNT(*) FROM commenti as c2 WHERE c2.commento_id_padre = c.commento_id) as num_risposte
+        FROM commenti as c
+        LEFT JOIN utenti as u ON c.utente_id = u.utente_id
+        LEFT JOIN scuole as s ON c.scuola_id = s.scuola_id
+        WHERE c.commento_id = :commento_id
+    SQL;
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':commento_id' => $commento_id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}

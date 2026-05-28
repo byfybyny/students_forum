@@ -60,7 +60,7 @@ $eliminato = $_REQUEST['eliminato'] ?? null;
         </button>
 
         <h2>Commenti</h2>
-        <div id="commenti" class="comment-list" hx-get="commenti.php?forum_id=<?=$forum_id?>" hx-trigger="revealed">
+        <div id="lista_commenti" class="comment-list" hx-get="commenti.php?forum_id=<?=$forum_id?>" hx-trigger="revealed">
             <div class="card">Caricamento...</div>
         </div>
     </div>

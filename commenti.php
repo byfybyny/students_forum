@@ -63,11 +63,19 @@ foreach($commenti as $commento) {
     */
     // Preparazione delle stringhe dinamiche
     $pulsanteElimina = $isAutore ? "
-        <form action='elimina_commento.php' method='POST' style='display:inline;'>
-            <input type='hidden' name='commento_id' value='{$commento['commento_id']}'>
-            <input type='hidden' name='forum_id' value='{$forum_id}'>
-            <button type='submit' class='delete-link' onclick='return confirm(\"Eliminare?\")'>Elimina</button>
-        </form>" : "";
+    <form hx-post='elimina_commento.php' 
+        hx-target='closest .comment' 
+        hx-swap='outerHTML transition:true'
+        hx-confirm='Sei sicuro di voler eliminare?'
+        style='display:inline;'>
+        
+        <input type='hidden' name='commento_id' value='{$commento['commento_id']}'>
+        <input type='hidden' name='forum_id' value='{$forum_id}'>
+        
+        <button type='submit' class='delete-link' style='border:none; background:none; cursor:pointer;'>
+            Elimina
+        </button>
+    </form>" : "";
 
     $pulsanteRispondi = "
         <div id='risposta_container_{$commento['commento_id']}'>

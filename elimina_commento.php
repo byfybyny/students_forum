@@ -32,5 +32,11 @@ else{
     $is_eliminato = deleteCommento($commento_id, $utente_id, 'utente');
 }
 
-$risultato = $is_eliminato ? 'true' : 'false';
-header("Location: forum.php?forum_id=$forum_id&eliminato=$risultato");
+if ($is_eliminato) {
+    // Risposta HTMX: il div viene rimosso dal DOM senza ricaricare
+    echo ""; 
+} else {
+    // Se fallisce, restituiamo un errore (opzionale)
+    http_response_code(500);
+    echo "Errore nell'eliminazione";
+}
