@@ -273,3 +273,24 @@ button:hover {
     opacity: 1;
     text-decoration: underline;
 }
+.forum-toggle {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+.toggle-btn {
+    padding: 8px 16px; /* era diventato 20px */
+    white-space: nowrap; /* ← evita che il testo vada a capo */
+}
+
+.toggle-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.toggle-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}

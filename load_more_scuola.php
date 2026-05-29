@@ -6,8 +6,11 @@ global $pdo;
 $offset    = (int)($_GET['offset']    ?? 0);
 $limit     = (int)($_GET['limit']     ?? 5);
 $scuola_id = (int)($_GET['scuola_id'] ?? 0);
+$modalita  = isset($_GET['modalita']) && $_GET['modalita'] === 'tutti' ? 'tutti' : 'scuola';
 
-$forum = getForumByScuola($scuola_id, $offset, $limit);
+$forum = $modalita === 'tutti'
+    ? getLast5Forum($offset, $limit)
+    : getForumByScuola($scuola_id, $offset, $limit);
 
 if (empty($forum)) exit;
 
@@ -15,15 +18,14 @@ foreach ($forum as $row): ?>
     <a href="forum.php?forum_id=<?= (int)$row['forum_id'] ?>" class="forum-card">
         <h3><?= htmlspecialchars($row['titolo']) ?></h3>
         <div class="meta-info">
-            Creato da <?= htmlspecialchars($row['username']) ?> il <?= htmlspecialchars($row['data_pubblicazione']) ?>
+            Creato da <strong><?= htmlspecialchars($row['username']) ?></strong> il <?= htmlspecialchars($row['data_pubblicazione']) ?>
         </div>
     </a>
 <?php endforeach;
 
-// Se ci sono ancora risultati, mostriamo il trigger per il caricamento successivo
 if (count($forum) === $limit): ?>
     <div id="altri_forum"
-         hx-get="load_more_scuola.php?offset=<?= $offset + $limit ?>&limit=<?= $limit ?>&scuola_id=<?= $scuola_id ?>"
+         hx-get="load_more_scuola.php?offset=<?= $offset + $limit ?>&limit=<?= $limit ?>&scuola_id=<?= $scuola_id ?>&modalita=<?= $modalita ?>"
          hx-trigger="revealed"
          hx-target="#altri_forum"
          hx-swap="outerHTML">
