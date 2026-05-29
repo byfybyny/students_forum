@@ -28,17 +28,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nuova_bio       = $_POST['bio'] ?? '';
     $nuova_scuola    = $_POST['scuola'] ?? '';
 
-    echo "Dati ricevuti: $nuovo_username, $nuovo_nome, $nuovo_cognome, $nuova_password, $nuova_bio, $nuova_scuola";
-
-    $pwd_hash = password_hash($nuova_password, PASSWORD_DEFAULT);
+    //echo "Dati ricevuti: $nuovo_username, $nuovo_nome, $nuovo_cognome, $nuova_password, $nuova_bio, $nuova_scuola";
      
-    $stmt = $pdo->prepare("
-        UPDATE utenti 
-        SET username = ?,nome = ?, cognome = ?, password_hash = ?, descrizione = ?, scuola_id = ?
-        WHERE email = ?
-    ");
-    $stmt->execute([$nuovo_username, $nuovo_nome, $nuovo_cognome, $pwd_hash, $nuova_bio, $nuova_scuola, $email]);
-
+    if ($nuova_password !== '') {
+        $pwd_hash = password_hash($nuova_password, PASSWORD_DEFAULT);
+        $stmt = $pdo->prepare("
+            UPDATE utenti 
+            SET username = ?,nome = ?, cognome = ?, password_hash = ?, descrizione = ?, scuola_id = ?
+            WHERE email = ?
+        ");
+        $stmt->execute([$nuovo_username, $nuovo_nome, $nuovo_cognome, $pwd_hash, $nuova_bio, $nuova_scuola, $email]);
+    } else {
+        $stmt = $pdo->prepare("
+            UPDATE utenti 
+            SET username = ?, nome = ?, cognome = ?, descrizione = ?, scuola_id = ?
+            WHERE email = ?
+        ");
+        $stmt->execute([$nuovo_username, $nuovo_nome, $nuovo_cognome, $nuova_bio, $nuova_scuola, $email]);
+    }
 
     header("Location: logout.php");
     exit;

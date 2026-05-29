@@ -39,8 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$nuovo_nome, $nuovo_indirizzo, $nuova_citta, $nuova_provincia, $nuovo_cap, $nuovo_telefono, $email]);
     }
 
-    $_SESSION['nome'] = $nuovo_nome;
-    header("Location: homepage_scuola.php");
+    header("Location: logout.php");
     exit;
 }
 ?>
