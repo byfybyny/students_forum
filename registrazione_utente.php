@@ -44,51 +44,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="it">
 <head>
     <title>Registrazione Studente</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Registrati come Studente</h1>
-    <a href="login.php">Torna al Login</a>
-    <br><br>
-
-    <?php if ($errore !== ''): ?>
-        <p style="color:red;"><?= $errore ?></p>
-    <?php endif; ?>
-
-    <form method="post">
-        <label>Username:</label>
-        <input type="text" name="username" required>
-        <br>
-
-        <label>Nome:</label>
-        <input type="text" name="nome" required>
-        <br>
-
-        <label>Cognome:</label>
-        <input type="text" name="cognome" required>
-        <br>
-
-        <label>Email:</label>
-        <input type="email" name="email" required>
-        <br>
-
-        <label>Password:</label>
-        <input type="password" name="password" required>
-        <br>
-
-        <label>Biografia:</label>
-        <textarea name="bio"></textarea>
-        <br>
-
-        <label>Scuola:</label>
-        <select name="scuola">
-            <option value="">-- Seleziona scuola --</option>
-            <?php foreach ($scuole as $s): ?>
-                <option value="<?= $s['scuola_id'] ?>"><?= htmlspecialchars($s['nome']) ?></option>
-            <?php endforeach; ?>
-        </select>
-        <br>
-
-        <input type="submit" value="Registrati">
-    </form>
+    <div class="forum-container">
+        <div class="form-card">
+            <h1>Registrati come Studente</h1>
+            <a href="login.php" class="action-btn" style="display:inline-block; margin-bottom:20px;">← Torna al Login</a>
+ 
+            <?php if ($errore !== ''): ?>
+                <div class="alert error"><?= htmlspecialchars($errore) ?></div>
+            <?php endif; ?>
+ 
+            <form method="post">
+                <div class="form-group">
+                    <label>Username *</label>
+                    <input type="text" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label>Nome *</label>
+                    <input type="text" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label>Cognome *</label>
+                    <input type="text" name="cognome" required>
+                </div>
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password *</label>
+                    <input type="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label>Biografia</label>
+                    <textarea name="bio"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Scuola</label>
+                    <select name="scuola">
+                        <option value="">-- Seleziona scuola --</option>
+                        <?php foreach ($scuole as $s): ?>
+                            <option value="<?= (int)$s['scuola_id'] ?>"><?= htmlspecialchars($s['nome']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+ 
+                <button type="submit" class="submit-btn">Registrati</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
