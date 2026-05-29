@@ -15,12 +15,15 @@ $forum = $modalita === 'tutti'
 if (empty($forum)) exit;
 
 foreach ($forum as $row): ?>
-    <a href="forum.php?forum_id=<?= (int)$row['forum_id'] ?>" class="forum-card">
+    <div class="forum-card" onclick="window.location='forum.php?forum_id=<?= (int)$row['forum_id'] ?>'" style="cursor:pointer;">
         <h3><?= htmlspecialchars($row['titolo']) ?></h3>
         <div class="meta-info">
-            Creato da <strong><?= htmlspecialchars($row['username']) ?></strong> il <?= htmlspecialchars($row['data_pubblicazione']) ?>
+            Creato da <a href="profilo_utente.php?utente_id=<?= (int)$row['utente_id'] ?>">
+                <strong><?= htmlspecialchars($row['username']) ?></strong>
+            </a>
+            il <?= htmlspecialchars($row['data_pubblicazione']) ?>
         </div>
-    </a>
+    </div>
 <?php endforeach;
 
 if (count($forum) === $limit): ?>

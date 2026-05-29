@@ -310,7 +310,7 @@ function checkPassword(string $email, string $password): array|false {
 function getLast5Forum(int $offset = 0, int $limit = 5): array {
     global $pdo;
     $stmt = $pdo->prepare("
-        SELECT f.forum_id, f.titolo, f.data_pubblicazione, u.username
+        SELECT f.forum_id, f.titolo, f.data_pubblicazione, u.username, u.utente_id
         FROM forum f
         JOIN utenti u ON f.utente_id = u.utente_id
         ORDER BY f.data_pubblicazione DESC
@@ -326,7 +326,7 @@ function getLast5Forum(int $offset = 0, int $limit = 5): array {
 function getForumByScuola(int $scuola_id, int $offset = 0, int $limit = 5): array {
     global $pdo;
     $stmt = $pdo->prepare("
-        SELECT f.forum_id, f.titolo, f.data_pubblicazione, u.username
+        SELECT f.forum_id, f.titolo, f.data_pubblicazione, u.username, u.utente_id
         FROM forum f
         JOIN utenti u ON f.utente_id = u.utente_id
         WHERE u.scuola_id = :scuola_id

@@ -49,14 +49,16 @@ if ($modalita === 'tutti') {
 
         <div class="forum-list" id="forum-body">
             <?php foreach ($forum as $row): ?>
-            <a href="forum.php?forum_id=<?= (int)$row['forum_id'] ?>" class="forum-card">
-                <h3><?= htmlspecialchars($row['titolo']) ?></h3>
+                <div class="forum-card" onclick="window.location='forum.php?forum_id=<?= (int)$row['forum_id'] ?>'" style="cursor:pointer;">
+                    <h3><?= htmlspecialchars($row['titolo']) ?></h3>
                 <div class="meta-info">
-                    Creato da <strong><?= htmlspecialchars($row['username']) ?></strong>
-                    il <?= htmlspecialchars($row['data_pubblicazione']) ?>
-                </div>
-            </a>
-            <?php endforeach; ?>
+                Creato da <a href="profilo_utente.php?utente_id=<?= (int)$row['utente_id'] ?>" onclick="event.stopPropagation()">
+                    <strong><?= htmlspecialchars($row['username']) ?></strong>
+                </a>
+            il <?= htmlspecialchars($row['data_pubblicazione']) ?>
+        </div>
+    </div>
+<?php endforeach; ?>
 
             <div id="altri_forum"
                  hx-get="load_more_scuola.php?modalita=<?= $modalita ?>&scuola_id=<?= (int)$scuola_id ?>&offset=5&limit=5"
