@@ -280,8 +280,8 @@ button:hover {
 }
 
 .toggle-btn {
-    padding: 8px 16px; /* era diventato 20px */
-    white-space: nowrap; /* ← evita che il testo vada a capo */
+    padding: 8px 16px; 
+    white-space: nowrap; 
 }
 
 .toggle-btn:hover {
