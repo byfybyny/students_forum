@@ -48,7 +48,7 @@ $eliminato = $_REQUEST['eliminato'] ?? null;
     <div class="forum-container">
         <div class="card forum-header">
             <h1><?=$forum['titolo']?></h1>
-            <p>Creato da <strong><?=$forum['username']?></strong> il <?=$forum['data_pubblicazione']?></p>
+            <p>Creato da <a href="profilo_utente.php?utente_id=<?= (int)$forum['utente_id'] ?>"><strong><?= htmlspecialchars($forum['username']) ?></strong></a> il <?= $forum['data_pubblicazione'] ?></p>
             <p><?=$forum['contenuto']?></p>
         </div>
 
