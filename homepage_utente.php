@@ -20,24 +20,23 @@ $forum = getLast5Forum(0, 5);
 </head>
 <body>
     <div class="forum-container">
-        <h1>Benvenuto, <?php echo $nome; ?>!</h1>
+        <h1>Benvenuto, <?= htmlspecialchars($nome) ?>!</h1>
         <div class="user-actions">
-            <a href="modifica_profilo_utente.php" class="action-btn">
-                ⚙️ Modifica Profilo
-            </a>
-            <a href="logout.php" class="action-btn logout">
-                ⏻ Logout
-            </a>
+            <a href="modifica_profilo_utente.php" class="action-btn">⚙️ Modifica Profilo</a>
+            <a href="logout.php" class="action-btn logout">⏻ Logout</a>
         </div>
 
         <div class="forum-list" id="forum-body">
             <?php foreach ($forum as $row): ?>
-            <a href="forum.php?forum_id=<?= (int)$row['forum_id'] ?>" class="forum-card">
-                <h3><?= $row['titolo']?></h3>
+            <div class="forum-card" onclick="window.location='forum.php?forum_id=<?= (int)$row['forum_id'] ?>'" style="cursor:pointer;">
+                <h3><?= htmlspecialchars($row['titolo']) ?></h3>
                 <div class="meta-info">
-                    Creato da <?= $row['username']?> il <?= $row['data_pubblicazione']?>
+                    Creato da <a href="profilo_utente.php?utente_id=<?= (int)$row['utente_id'] ?>" onclick="event.stopPropagation()">
+                        <strong><?= htmlspecialchars($row['username']) ?></strong>
+                    </a>
+                    il <?= htmlspecialchars($row['data_pubblicazione']) ?>
                 </div>
-            </a>
+            </div>
             <?php endforeach; ?>
 
             <div id="altri_forum"

@@ -52,6 +52,7 @@ if ($modalita === 'tutti') {
                 <div class="forum-card" onclick="window.location='forum.php?forum_id=<?= (int)$row['forum_id'] ?>'" style="cursor:pointer;">
                     <h3><?= htmlspecialchars($row['titolo']) ?></h3>
                 <div class="meta-info">
+                    <!-- stop propagation fa si che se si schiaccia sul nome non apre anche il from contemporanreamente-->
                 Creato da <a href="profilo_utente.php?utente_id=<?= (int)$row['utente_id'] ?>" onclick="event.stopPropagation()">
                     <strong><?= htmlspecialchars($row['username']) ?></strong>
                 </a>
