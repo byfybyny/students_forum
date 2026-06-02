@@ -22,6 +22,7 @@ $forum = getLast5Forum(0, 5);
     <div class="forum-container">
         <h1>Benvenuto, <?= htmlspecialchars($nome) ?>!</h1>
         <div class="user-actions">
+            <a href="pagina_creazione_forum.php" class="action-btn">✏️ Crea Forum</a>
             <a href="modifica_profilo_utente.php" class="action-btn">⚙️ Modifica Profilo</a>
             <a href="logout.php" class="action-btn logout">⏻ Logout</a>
         </div>

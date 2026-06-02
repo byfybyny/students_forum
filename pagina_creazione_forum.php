@@ -1,39 +1,51 @@
 <?php
-
 require_once "function.php";
-
 session_start();
 
 $utente_id = $_SESSION['utente_id'] ?? null;
-$errore = $_REQUEST['errore'] ?? null;
+$errore    = $_REQUEST['errore']    ?? null;
 
-if($utente_id === null) {
+if ($utente_id === null) {
     header('Location: login.php');
     exit;
 }
-
 ?>
-<html>
-    <head>
-        <title>Creazione forum</title>
-    </head>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>Crea Forum</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="forum-container">
 
-    <body>
-        <h1>Creazione forum</h1>
-        <?php if($errore === 'true'): ?>
-            <p style="color: red;">Tutti i campi sono obbligatori</p>
+        <div class="user-actions">
+            <a href="homepage_utente.php" class="action-btn">← Torna all'Homepage</a>
+        </div>
+
+        <?php if ($errore === 'true'): ?>
+            <div class="alert error">Tutti i campi sono obbligatori.</div>
         <?php endif; ?>
-        <?php if($errore === 'false'): ?>
-            <p style="color: green;">Forum creato con successo</p>
+        <?php if ($errore === 'false'): ?>
+            <div class="alert success">Forum creato con successo!</div>
         <?php endif; ?>
-        <form action="creazione_forum.php?utente_id=<?=$utente_id?>" method="post">
-            <label for="titolo">Titolo</label>
-            <input type="text" name="titolo" id="titolo" required>
-            <br>
-            <label for="contenuto">Contenuto</label>
-            <textarea name="contenuto" id="contenuto" required></textarea>
-            <br>
-            <button type="submit">Crea forum</button>
-        </form>
-    </body>
+
+        <div class="form-card">
+            <h1>Crea un nuovo Forum</h1>
+            <form action="creazione_forum.php" method="post">
+                <div class="form-group">
+                    <label for="titolo">Titolo *</label>
+                    <input type="text" name="titolo" id="titolo" required>
+                </div>
+                <div class="form-group">
+                    <label for="contenuto">Contenuto *</label>
+                    <textarea name="contenuto" id="contenuto" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Crea Forum</button>
+            </form>
+        </div>
+
+    </div>
+</body>
 </html>
